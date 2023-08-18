@@ -1,14 +1,15 @@
 {
   "required": false,
-  "package": "com.template.mixin",
+  "package": "com.recipeessentials.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "template.refmap.json",
+  "refmap": "recipeessentials.refmap.json",
+  "mixinPriority": 200,
   "mixins": [
   ],
   "client": [
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   },
   "minVersion": "0.8"
 }

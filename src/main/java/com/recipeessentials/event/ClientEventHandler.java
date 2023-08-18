@@ -1,4 +1,4 @@
-package com.template.event;
+package com.recipeessentials.event;
 
 public class ClientEventHandler
 {
