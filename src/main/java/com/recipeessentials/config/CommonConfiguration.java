@@ -10,6 +10,7 @@ public class CommonConfiguration implements ICommonConfig
     public boolean enableBetterRecipebookSorting = true;
     public boolean smallerRecipePacket           = false;
     public boolean cacheRecipes                  = true;
+    public boolean recipebookShowAll             = true;
 
     public CommonConfiguration()
     {
@@ -28,6 +29,11 @@ public class CommonConfiguration implements ICommonConfig
         entry3.addProperty("desc:", "Enables better sorting for the list of displayed recipes in the recipebook, craftables and recently used recipes are priotized: default:true");
         entry3.addProperty("enableBetterRecipebookSorting", enableBetterRecipebookSorting);
         root.add("enableBetterRecipebookSorting", entry3);
+
+        final JsonObject entry8 = new JsonObject();
+        entry8.addProperty("desc:", "Enables the recipe book to show all recipes from the get go: default:true");
+        entry8.addProperty("recipebookShowAll", recipebookShowAll);
+        root.add("recipebookShowAll", entry8);
 
         final JsonObject entry2 = new JsonObject();
         entry2.addProperty("desc:", "Enables faster item comparison for better performance, disable on mod conflicts: default:true");
@@ -55,5 +61,6 @@ public class CommonConfiguration implements ICommonConfig
         enableBetterRecipebookSorting = data.get("enableBetterRecipebookSorting").getAsJsonObject().get("enableBetterRecipebookSorting").getAsBoolean();
         smallerRecipePacket = data.get("smallerRecipePacket").getAsJsonObject().get("smallerRecipePacket").getAsBoolean();
         cacheRecipes = data.get("cacheRecipes").getAsJsonObject().get("cacheRecipes").getAsBoolean();
+        recipebookShowAll = data.get("recipebookShowAll").getAsJsonObject().get("recipebookShowAll").getAsBoolean();
     }
 }
