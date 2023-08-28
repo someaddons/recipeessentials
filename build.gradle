@@ -9,7 +9,8 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
-
+import org.gradle.nativeplatform.platform.internal.Architectures
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
@@ -103,6 +104,9 @@ dependencies {
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
     implementation fg.deobf("curse.maven:cupboard-326652:4669193")
+    implementation fg.deobf("curse.maven:spark-361579:4587309")
+    implementation fg.deobf("curse.maven:jei-238222:4712868")
+    implementation fg.deobf("curse.maven:connectivity-470193:4689492")
 }
 
 jar {

@@ -13,6 +13,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.recipeessentials.RecipeEssentials.MOD_ID;
@@ -21,9 +23,10 @@ import static com.recipeessentials.RecipeEssentials.MOD_ID;
 @Mod(MOD_ID)
 public class RecipeEssentials
 {
+    public static       List<byte[]>                        data   = new ArrayList<>();
     public static final String                              MOD_ID = "recipeessentials";
     public static final Logger                              LOGGER = LogManager.getLogger();
-    private static      CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
+    public static       CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
     public static       Random                              rand   = new Random();
 
     public RecipeEssentials()
