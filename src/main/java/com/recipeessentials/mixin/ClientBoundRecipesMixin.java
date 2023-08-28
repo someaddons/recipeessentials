@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +46,7 @@ public class ClientBoundRecipesMixin
             final ResourceLocation resourceLocation = resourceLocations.get(i);
             final ResourceLocation resourceLocation1 = resourceLocations.get(i + 1);
 
-            recipes.add(BuiltInRegistries.RECIPE_SERIALIZER.getOptional(resourceLocation).orElseThrow(() -> {
+            recipes.add(Registry.RECIPE_SERIALIZER.getOptional(resourceLocation).orElseThrow(() -> {
                 return new IllegalArgumentException("Unknown recipe serializer " + resourceLocation);
             }).fromNetwork(resourceLocation1, buf));
         }
@@ -60,7 +60,7 @@ public class ClientBoundRecipesMixin
         final StringBuilder builder = new StringBuilder();
         for (final Recipe recipe : recipes)
         {
-            builder.append(BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer()).toString());
+            builder.append(Registry.RECIPE_SERIALIZER.getKey(recipe.getSerializer()).toString());
             builder.append(";");
             builder.append(recipe.getId().toString());
             builder.append(";");
