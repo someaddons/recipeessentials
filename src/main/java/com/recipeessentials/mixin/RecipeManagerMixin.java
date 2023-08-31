@@ -54,11 +54,6 @@ public class RecipeManagerMixin
                 }
             }
         }
-
-        if (inventoryIn.isEmpty() && recipeTypeIn == RecipeType.CRAFTING)
-        {
-            c.setReturnValue(Optional.empty());
-        }
     }
 
     @Inject(method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;", at = @At("RETURN"))
@@ -102,18 +97,10 @@ public class RecipeManagerMixin
                 final Recipe recipe = recipes.get(i);
                 if (recipe.matches(inventoryIn, worldIn))
                 {
-                    if (byName.get(recipe.getId()) == recipe)
-                    {
-                        cir.setReturnValue(Optional.of(new Pair<>(recipe.getId(), (T) recipe)));
-                        return;
-                    }
+                    cir.setReturnValue(Optional.of(new Pair<>(recipe.getId(), (T) recipe)));
+                    return;
                 }
             }
-        }
-
-        if (inventoryIn.isEmpty() && recipeTypeIn == RecipeType.CRAFTING)
-        {
-            cir.setReturnValue(Optional.empty());
         }
     }
 
@@ -162,13 +149,11 @@ public class RecipeManagerMixin
                 }
             }
 
-            c.setReturnValue(matches);
-            return;
-        }
-
-        if (inventoryIn != null && inventoryIn.isEmpty() && recipeTypeIn == RecipeType.CRAFTING)
-        {
-            c.setReturnValue(Optional.empty());
+            if (!matches.isEmpty())
+            {
+                c.setReturnValue(matches);
+                return;
+            }
         }
     }
 
