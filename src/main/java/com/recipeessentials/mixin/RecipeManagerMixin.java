@@ -151,7 +151,7 @@ public class RecipeManagerMixin
 
             if (!matches.isEmpty())
             {
-                matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem().getDescriptionId()));
+                matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
                 c.setReturnValue(matches);
                 return;
             }
