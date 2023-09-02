@@ -151,6 +151,7 @@ public class RecipeManagerMixin
 
             if (!matches.isEmpty())
             {
+                matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
                 c.setReturnValue(matches);
                 return;
             }
@@ -211,7 +212,7 @@ public class RecipeManagerMixin
         {
             if (!recipe.getValue().getId().equals(recipe.getKey()))
             {
-                RecipeEssentials.LOGGER.warn("Recipe without matching ID");
+                RecipeEssentials.LOGGER.warn("Recipe without matching ID:" + recipe.getValue().getId());
             }
 
             recipeIndexes.put(recipe.getValue(), index++);
