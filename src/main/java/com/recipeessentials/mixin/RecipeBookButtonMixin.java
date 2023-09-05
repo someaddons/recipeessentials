@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+
 @Mixin(CraftingScreen.class)
 public abstract class RecipeBookButtonMixin extends AbstractContainerScreen<CraftingMenu>
 {
@@ -36,7 +38,7 @@ public abstract class RecipeBookButtonMixin extends AbstractContainerScreen<Craf
     {
         if (RecipeEssentials.config.getCommonConfig().disableRecipebook)
         {
-            for (final var widget : renderables)
+            for (final var widget : new ArrayList<>(renderables))
             {
                 if (widget instanceof ImageButton && ((ImageButton) widget).resourceLocation.equals(RECIPE_BUTTON_LOCATION))
                 {
