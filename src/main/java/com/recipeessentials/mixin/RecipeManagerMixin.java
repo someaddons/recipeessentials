@@ -28,10 +28,14 @@ import java.util.*;
 /**
  * Caches recipes for faster lookups, helps with autocrafting mods
  */
-public class RecipeManagerMixin
+public abstract class RecipeManagerMixin
 {
     @Shadow
-    private Map<ResourceLocation, Recipe<?>>        byName;
+    private Map<ResourceLocation, Recipe<?>> byName;
+
+    @Shadow
+    public abstract <C extends Container, T extends Recipe<C>> List<T> getRecipesFor(final RecipeType<T> p_44057_, final C p_44058_, final Level p_44059_);
+
     @Unique
     private Long2ObjectOpenHashMap<List<Recipe<?>>> recipeCache = new Long2ObjectOpenHashMap<>();
 
@@ -54,6 +58,10 @@ public class RecipeManagerMixin
                 }
             }
         }
+        else
+        {
+            getRecipesFor(recipeTypeIn, inventoryIn, worldIn);
+        }
     }
 
     @Inject(method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;", at = @At("RETURN"))
@@ -63,7 +71,6 @@ public class RecipeManagerMixin
 
         if (val.isPresent())
         {
-            // TODO: Maybe get the full list on missing instead? that would make sure that multiple matching ones are in the list and tried in order -> less conflicts
             long hash = calcHash(inventoryIn, recipeTypeIn);
             if (hash != -1)
             {
@@ -101,6 +108,10 @@ public class RecipeManagerMixin
                     return;
                 }
             }
+        }
+        else
+        {
+            getRecipesFor(recipeTypeIn, inventoryIn, worldIn);
         }
     }
 
