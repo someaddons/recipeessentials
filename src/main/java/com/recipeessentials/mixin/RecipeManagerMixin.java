@@ -57,6 +57,8 @@ public abstract class RecipeManagerMixin
                     return;
                 }
             }
+
+            c.setReturnValue(Optional.empty());
         }
         else
         {
@@ -108,6 +110,8 @@ public abstract class RecipeManagerMixin
                     return;
                 }
             }
+
+            cir.setReturnValue(Optional.empty());
         }
         else
         {
