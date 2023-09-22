@@ -203,7 +203,7 @@ public abstract class RecipeManagerMixin
                         }
                     }
 
-                    matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
+                    matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem().getDescriptionId()));
                     if (!recipes.equals(matches))
                     {
                         recipeList.report(recipeTypeIn, inventoryIn, recipes);
