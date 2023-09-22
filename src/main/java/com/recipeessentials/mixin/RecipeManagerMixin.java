@@ -3,6 +3,7 @@ package com.recipeessentials.mixin;
 import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Pair;
 import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.recipecache.CachedRecipeList;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +38,7 @@ public abstract class RecipeManagerMixin
     public abstract <C extends Container, T extends Recipe<C>> List<T> getRecipesFor(final RecipeType<T> p_44057_, final C p_44058_, final Level p_44059_);
 
     @Unique
-    private Long2ObjectOpenHashMap<List<Recipe<?>>> recipeCache = new Long2ObjectOpenHashMap<>();
+    private Long2ObjectOpenHashMap<CachedRecipeList> recipeCache = new Long2ObjectOpenHashMap<>();
 
     @Unique
     private Object2IntOpenHashMap<Recipe> recipeIndexes = new Object2IntOpenHashMap();
@@ -45,20 +46,19 @@ public abstract class RecipeManagerMixin
     @Inject(method = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;Lnet/minecraft/world/Container;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
     public <C extends Container, T extends Recipe<C>> void onGetRecipe(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn, CallbackInfoReturnable<Optional> c)
     {
-        final List<Recipe<?>> recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null)
+        final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
         {
-            for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++)
+            recipes.useCount++;
+            for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
-                final Recipe recipe = recipes.get(i);
+                final Recipe recipe = recipes.recipes.get(i);
                 if (recipe.matches(inventoryIn, worldIn))
                 {
                     c.setReturnValue(Optional.of(recipe));
                     return;
                 }
             }
-
-            c.setReturnValue(Optional.empty());
         }
         else
         {
@@ -76,18 +76,18 @@ public abstract class RecipeManagerMixin
             long hash = calcHash(inventoryIn, recipeTypeIn);
             if (hash != -1)
             {
-                List<Recipe<?>> recipeList = recipeCache.get(hash);
-
+                CachedRecipeList recipeList = recipeCache.get(hash);
                 if (recipeList == null)
                 {
-                    recipeList = new ArrayList<>();
+                    recipeList = new CachedRecipeList(recipeTypeIn, inventoryIn);
                     recipeCache.put(hash, recipeList);
                 }
 
-                if (!recipeList.contains(val.get()))
+                recipeList.useCount++;
+                if (!recipeList.recipes.contains(val.get()))
                 {
-                    recipeList.add(val.get());
-                    recipeList.sort(Comparator.comparingInt(recipeIndexes::getInt));
+                    recipeList.recipes.add(val.get());
+                    recipeList.recipes.sort(Comparator.comparingInt(recipeIndexes::getInt));
                 }
             }
         }
@@ -98,20 +98,19 @@ public abstract class RecipeManagerMixin
       final RecipeType<T> recipeTypeIn,
       final C inventoryIn, final Level worldIn, final ResourceLocation p_220252_, final CallbackInfoReturnable<Optional<Pair<ResourceLocation, T>>> cir)
     {
-        final List<Recipe<?>> recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null)
+        final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
         {
-            for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++)
+            recipes.useCount++;
+            for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
-                final Recipe recipe = recipes.get(i);
+                final Recipe recipe = recipes.recipes.get(i);
                 if (recipe.matches(inventoryIn, worldIn))
                 {
                     cir.setReturnValue(Optional.of(new Pair<>(recipe.getId(), (T) recipe)));
                     return;
                 }
             }
-
-            cir.setReturnValue(Optional.empty());
         }
         else
         {
@@ -131,18 +130,19 @@ public abstract class RecipeManagerMixin
             long hash = calcHash(inventoryIn, recipeTypeIn);
             if (hash != -1)
             {
-                List<Recipe<?>> recipeList = recipeCache.get(hash);
+                CachedRecipeList recipeList = recipeCache.get(hash);
 
                 if (recipeList == null)
                 {
-                    recipeList = new ArrayList<>();
+                    recipeList = new CachedRecipeList(recipeTypeIn, inventoryIn);
                     recipeCache.put(hash, recipeList);
                 }
 
-                if (!recipeList.contains(val.get().getSecond()))
+                recipeList.useCount++;
+                if (!recipeList.recipes.contains(val.get().getSecond()))
                 {
-                    recipeList.add(val.get().getSecond());
-                    recipeList.sort(Comparator.comparingInt(recipeIndexes::getInt));
+                    recipeList.recipes.add(val.get().getSecond());
+                    recipeList.recipes.sort(Comparator.comparingInt(recipeIndexes::getInt));
                 }
             }
         }
@@ -151,12 +151,13 @@ public abstract class RecipeManagerMixin
     @Inject(method = "getRecipesFor", at = @At(value = "HEAD"), cancellable = true)
     private <C extends Container, T extends Recipe<C>> void onGetRecipes(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn, CallbackInfoReturnable c)
     {
-        final List<Recipe<?>> recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null)
+        final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
         {
+            recipes.useCount++;
             List<Recipe<?>> matches = new ArrayList<>();
 
-            for (final Recipe recipe : recipes)
+            for (final Recipe recipe : recipes.recipes)
             {
                 if (recipe.matches(inventoryIn, worldIn))
                 {
@@ -183,27 +184,47 @@ public abstract class RecipeManagerMixin
             long hash = calcHash(inventoryIn, recipeTypeIn);
             if (hash != -1)
             {
-                List<Recipe<?>> recipeList = recipeCache.get(hash);
+                CachedRecipeList recipeList = recipeCache.get(hash);
 
                 if (recipeList == null)
                 {
-                    recipeList = new ArrayList<>();
+                    recipeList = new CachedRecipeList(recipeTypeIn, inventoryIn);
                     recipeCache.put(hash, recipeList);
                 }
+                else
+                {
+                    List<Recipe<?>> matches = new ArrayList<>();
+
+                    for (final Recipe recipe : recipeList.recipes)
+                    {
+                        if (recipe.matches(inventoryIn, worldIn))
+                        {
+                            matches.add(recipe);
+                        }
+                    }
+
+                    matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
+                    if (!recipes.equals(matches))
+                    {
+                        recipeList.report(recipeTypeIn, inventoryIn, recipes);
+                    }
+                }
+
+                recipeList.useCount++;
 
                 boolean added = false;
                 for (final Recipe recipe : recipes)
                 {
-                    if (!recipeList.contains(recipe))
+                    if (!recipeList.recipes.contains(recipe))
                     {
                         added = true;
-                        recipeList.add(recipe);
+                        recipeList.recipes.add(recipe);
                     }
                 }
 
                 if (added)
                 {
-                    recipeList.sort(Comparator.comparingInt(recipeIndexes::getInt));
+                    recipeList.recipes.sort(Comparator.comparingInt(recipeIndexes::getInt));
                 }
             }
         }
@@ -211,11 +232,6 @@ public abstract class RecipeManagerMixin
 
     /**
      * Reset cache
-     *
-     * @param p_44037_
-     * @param p_44038_
-     * @param p_44039_
-     * @param ci
      */
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("RETURN"))
     private void onApply(final Map<ResourceLocation, JsonElement> p_44037_, final ResourceManager p_44038_, final ProfilerFiller p_44039_, final CallbackInfo ci)
@@ -236,9 +252,6 @@ public abstract class RecipeManagerMixin
 
     /**
      * Reset cache
-     *
-     * @param p_44025_
-     * @param ci
      */
     @Inject(method = "replaceRecipes", at = @At("RETURN"))
     private void onReplace(final Iterable<Recipe<?>> p_44025_, final CallbackInfo ci)
@@ -274,6 +287,7 @@ public abstract class RecipeManagerMixin
 
             if (stack != null && !stack.isEmpty())
             {
+                hash = 31 * hash + i;
                 hash = 31 * hash + stack.getItem().hashCode();
                 /*
                 Less precise hashcode for now, to avoid filling too many entries if there is random changes
