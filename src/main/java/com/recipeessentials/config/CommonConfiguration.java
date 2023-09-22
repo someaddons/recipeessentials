@@ -10,6 +10,7 @@ public class CommonConfiguration implements ICommonConfig
     public boolean enableBetterRecipebookSorting = true;
     public boolean smallerRecipePacket           = false;
     public boolean cacheRecipes                  = true;
+    public boolean logCachingErrors              = false;
     public boolean recipebookShowAll             = true;
 
     public CommonConfiguration()
@@ -51,6 +52,11 @@ public class CommonConfiguration implements ICommonConfig
         entry5.addProperty("cacheRecipes", cacheRecipes);
         root.add("cacheRecipes", entry5);
 
+        final JsonObject entry6 = new JsonObject();
+        entry6.addProperty("desc:", "Whether to log errors during caching: default:false");
+        entry6.addProperty("logCachingErrors", logCachingErrors);
+        root.add("logCachingErrors", entry6);
+
         return root;
     }
 
@@ -62,5 +68,6 @@ public class CommonConfiguration implements ICommonConfig
         smallerRecipePacket = data.get("smallerRecipePacket").getAsJsonObject().get("smallerRecipePacket").getAsBoolean();
         cacheRecipes = data.get("cacheRecipes").getAsJsonObject().get("cacheRecipes").getAsBoolean();
         recipebookShowAll = data.get("recipebookShowAll").getAsJsonObject().get("recipebookShowAll").getAsBoolean();
+        logCachingErrors = data.get("logCachingErrors").getAsJsonObject().get("logCachingErrors").getAsBoolean();
     }
 }
