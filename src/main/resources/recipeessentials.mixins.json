@@ -7,6 +7,7 @@
   "plugin": "com.recipeessentials.mixin.MixinConfig",
   "mixins": [
     "ClientBoundRecipesMixin",
+    "RecipebookMixin",
     "RecipeManagerMixin",
     "ServerRecipeBookMixin",
     "nbt.ByteArrayTagMixin",
@@ -19,6 +20,7 @@
   "client": [
     "RecipeBookButtonMixin",
     "RecipebookSortingMixin",
+    "RecipeButtonMixin",
     "RecipeCollectionMixin"
   ],
   "injectors": {
