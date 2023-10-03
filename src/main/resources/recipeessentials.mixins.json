@@ -6,10 +6,14 @@
   "plugin": "com.recipeessentials.mixin.MixinConfig",
   "mixins": [
     "ClientBoundRecipesMixin",
-    "CompoundNBTMixin",
-    "ItemStackMixin",
     "RecipeManagerMixin",
-    "ServerRecipeBookMixin"
+    "ServerRecipeBookMixin",
+    "nbt.ByteArrayTagMixin",
+    "nbt.CompoundNBTMixin",
+    "nbt.IntArrayTagMixin",
+    "nbt.ItemStackMixin",
+    "nbt.ListTagMixin",
+    "nbt.LongArrayTagMixin"
   ],
   "client": [
     "RecipeBookButtonMixin",
