@@ -29,13 +29,17 @@ public class CachedRecipeList
         originType = recipeTypeIn;
         recipes = new ArrayList<>();
         originStacks = new ArrayList<>();
-        for (int i = 0; i < inventoryIn.getContainerSize(); i++)
-        {
-            ItemStack stack = inventoryIn.getItem(i);
 
-            if (stack != null && !stack.isEmpty())
+        if (inventoryIn != null)
+        {
+            for (int i = 0; i < inventoryIn.getContainerSize(); i++)
             {
-                originStacks.add(stack.copy());
+                ItemStack stack = inventoryIn.getItem(i);
+
+                if (stack != null && !stack.isEmpty())
+                {
+                    originStacks.add(stack.copy());
+                }
             }
         }
     }
