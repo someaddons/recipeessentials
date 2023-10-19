@@ -18,7 +18,7 @@ public class ServerRecipeBookMixin
     @Inject(method = "sendInitialRecipeBook", at = @At("HEAD"), cancellable = true)
     private void recipeessentials$disableRecipebookInit(final ServerPlayer p_12790_, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook)
+        if (RecipeEssentials.config.getCommonConfig().disableRecipebook || RecipeEssentials.config.getCommonConfig().recipebookShowAll)
         {
             ci.cancel();
         }
@@ -30,7 +30,7 @@ public class ServerRecipeBookMixin
       final ServerPlayer p_12803_,
       final List<ResourceLocation> p_12804_, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook)
+        if (RecipeEssentials.config.getCommonConfig().disableRecipebook || RecipeEssentials.config.getCommonConfig().recipebookShowAll)
         {
             ci.cancel();
         }
