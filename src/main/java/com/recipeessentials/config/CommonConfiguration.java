@@ -32,7 +32,8 @@ public class CommonConfiguration implements ICommonConfig
         root.add("enableBetterRecipebookSorting", entry3);
 
         final JsonObject entry8 = new JsonObject();
-        entry8.addProperty("desc:", "Enables the recipe book to show all recipes from the get go: default:true");
+        entry8.addProperty("desc:",
+          "Enables the recipe book to show all recipes from the get go, also enables modded recipes to show and disables network/login overhead: default:true");
         entry8.addProperty("recipebookShowAll", recipebookShowAll);
         root.add("recipebookShowAll", entry8);
 
