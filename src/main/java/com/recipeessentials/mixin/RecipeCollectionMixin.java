@@ -22,6 +22,17 @@ public class RecipeCollectionMixin
         }
     }
 
+    @Redirect(method = "updateKnownRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
+    private boolean recipeessentials$hasKnown(final RecipeBook instance, final Recipe<?> recipe)
+    {
+        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && !recipe.isSpecial())
+        {
+            return true;
+        }
+
+        return instance.contains(recipe);
+    }
+
     @Redirect(method = "canCraft", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
     private boolean recipeessentials$contains(final RecipeBook instance, final Recipe<?> recipe)
     {
