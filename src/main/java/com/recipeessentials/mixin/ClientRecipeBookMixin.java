@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * TODO: Disabled, seems to affect login with multiple mods around? replace by specific redirects
+ */
 @Mixin(RecipeBook.class)
 public class ClientRecipeBookMixin
 {

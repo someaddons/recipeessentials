@@ -41,11 +41,6 @@ public class MixinConfig implements IMixinConfigPlugin
             return RecipeEssentials.config.getCommonConfig().cacheRecipes;
         }
 
-        if (mixinClassName.contains("ServerRecipeBookMixin"))
-        {
-            return RecipeEssentials.config.getCommonConfig().disableRecipebook;
-        }
-
         return true;
     }
 
