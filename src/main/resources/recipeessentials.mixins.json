@@ -17,7 +17,7 @@
     "nbt.LongArrayTagMixin"
   ],
   "client": [
-    "ClientRecipeBookMixin",
+    "InventoryButtonMixin",
     "RecipeBookButtonMixin",
     "RecipebookSortingMixin",
     "RecipeButtonMixin",
