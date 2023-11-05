@@ -153,9 +153,14 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
     @Override
     public void markDirty()
     {
+        if (hashCode == -1)
+        {
+            return;
+        }
+
         hashCode = -1;
         equalTo = null;
-        if (parentTag != null)
+        if (parentTag != null && parentTag != this)
         {
             parentTag.markDirty();
             parentTag = null;
