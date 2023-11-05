@@ -3,6 +3,7 @@ package com.recipeessentials.mixin;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
+import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.item.crafting.Recipe;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,8 +27,10 @@ public class RecipebookSortingMixin
     @Final
     private RecipeBookPage recipeBookPage;
 
+    @Shadow
+    protected RecipeBookMenu<?> menu;
     @Unique
-    private Recipe lastRecipe = null;
+    private   Recipe            lastRecipe = null;
 
     @Inject(method = "mouseClicked", at = @At("HEAD"))
     private void recipeessentials$onSelectedRecipe(
@@ -56,5 +59,15 @@ public class RecipebookSortingMixin
             }
             return (r.hasCraftable() ? sum + 1000 : sum);
         }).reversed());
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void recipeessentials$onTick(final CallbackInfo ci)
+    {
+        // Prevent crash of unknown cause, might be from a different mod
+        if (menu == null)
+        {
+            ci.cancel();
+        }
     }
 }
