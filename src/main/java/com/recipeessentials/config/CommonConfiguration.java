@@ -22,7 +22,7 @@ public class CommonConfiguration implements ICommonConfig
         final JsonObject root = new JsonObject();
 
         final JsonObject entry = new JsonObject();
-        entry.addProperty("desc:", "Whether to disable the recipe book entirely, removes the button on client side and removes synced data on server side: default:false");
+        entry.addProperty("desc:", "Disables the recipe book entirely, removes the button on client side and removes synced data on server side: default:false");
         entry.addProperty("disableRecipebook", disableRecipebook);
         root.add("disableRecipebook", entry);
 
@@ -54,7 +54,7 @@ public class CommonConfiguration implements ICommonConfig
         root.add("cacheRecipes", entry5);
 
         final JsonObject entry6 = new JsonObject();
-        entry6.addProperty("desc:", "Whether to log errors during caching: default:false");
+        entry6.addProperty("desc:", "Enables error logging for recipe caching: default:false");
         entry6.addProperty("logCachingErrors", logCachingErrors);
         root.add("logCachingErrors", entry6);
 
