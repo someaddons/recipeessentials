@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 
-@Mixin(RecipeManager.class)
+@Mixin(value = RecipeManager.class, priority = 50)
 /**
  * Caches recipes for faster lookups, helps with autocrafting mods
  */
