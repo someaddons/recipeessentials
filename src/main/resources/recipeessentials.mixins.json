@@ -7,7 +7,7 @@
   "mixins": [
     "ClientBoundRecipesMixin",
     "RecipebookMixin",
-    "RecipeManagerMixin",
+    "ReloadableServerResourcesMixin",
     "ServerRecipeBookMixin",
     "nbt.ByteArrayTagMixin",
     "nbt.CompoundNBTMixin",
@@ -17,6 +17,7 @@
     "nbt.LongArrayTagMixin"
   ],
   "client": [
+    "ClientPacketListenerMixin",
     "InventoryButtonMixin",
     "RecipeBookButtonMixin",
     "RecipebookSortingMixin",
