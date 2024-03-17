@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,11 +24,12 @@ import static com.recipeessentials.RecipeEssentials.MOD_ID;
 @Mod(MOD_ID)
 public class RecipeEssentials
 {
-    public static       List<byte[]>                        data   = new ArrayList<>();
-    public static final String                              MOD_ID = "recipeessentials";
-    public static final Logger                              LOGGER = LogManager.getLogger();
-    public static       CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
-    public static       Random                              rand   = new Random();
+    public static       List<byte[]>                        data            = new ArrayList<>();
+    public static final String                              MOD_ID          = "recipeessentials";
+    public static final Logger                              LOGGER          = LogManager.getLogger();
+    public static       CupboardConfig<CommonConfiguration> config          = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
+    public static       Random                              rand            = new Random();
+    public static       boolean                             polymorphCompat = false;
 
     public RecipeEssentials()
     {
@@ -35,6 +37,10 @@ public class RecipeEssentials
         Mod.EventBusSubscriber.Bus.FORGE.bus().get().register(EventHandler.class);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        if (FMLLoader.getLoadingModList().getModFileById("polymorph") != null)
+        {
+            polymorphCompat = true;
+        }
     }
 
     @SubscribeEvent
