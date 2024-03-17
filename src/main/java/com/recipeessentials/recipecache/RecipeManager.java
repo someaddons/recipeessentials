@@ -39,6 +39,11 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     @Override
     public <C extends Container, T extends Recipe<C>> Optional getRecipeFor(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn)
     {
+        if (RecipeEssentials.polymorphCompat)
+        {
+            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn);
+        }
+
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
         if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
@@ -91,6 +96,11 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
       final Level worldIn,
       final ResourceLocation p_220252_)
     {
+        if (RecipeEssentials.polymorphCompat)
+        {
+            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, p_220252_);
+        }
+
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
         if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
