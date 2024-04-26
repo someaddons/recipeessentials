@@ -20,6 +20,7 @@
     "ClientPacketListenerMixin",
     "InventoryButtonMixin",
     "RecipeBookButtonMixin",
+    "RecipebookHidingMixin",
     "RecipebookSortingMixin",
     "RecipeButtonMixin",
     "RecipeCollectionMixin"
