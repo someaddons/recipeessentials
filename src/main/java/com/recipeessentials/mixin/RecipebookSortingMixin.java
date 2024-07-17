@@ -1,5 +1,6 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.RecipeEssentials;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
@@ -39,26 +40,32 @@ public class RecipebookSortingMixin
       final int p_100296_,
       final CallbackInfoReturnable<Boolean> cir)
     {
-        Recipe<?> recipe = this.recipeBookPage.getLastClickedRecipe();
-
-        if (lastRecipe != recipe && recipe != null)
+        if (RecipeEssentials.config.getCommonConfig().enableBetterRecipebookSorting)
         {
-            USED_GHOST_RECIPES.put(recipe.getId(), USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0) + 1);
-            lastRecipe = recipe;
+            Recipe<?> recipe = this.recipeBookPage.getLastClickedRecipe();
+
+            if (lastRecipe != recipe && recipe != null)
+            {
+                USED_GHOST_RECIPES.put(recipe.getId(), USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0) + 1);
+                lastRecipe = recipe;
+            }
         }
     }
 
     @Inject(method = "updateCollections", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/recipebook/RecipeBookPage;updateCollections(Ljava/util/List;Z)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void recipeessentials$sortCollection(final boolean p_100383_, final CallbackInfo ci, List<RecipeCollection> list, List<RecipeCollection> resultRecipes)
     {
-        resultRecipes.sort(Comparator.<RecipeCollection>comparingInt(r -> {
-            int sum = 0;
-            for (final Recipe<?> recipe : r.getRecipes())
-            {
-                sum += USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0);
-            }
-            return (r.hasCraftable() ? sum + 1000 : sum);
-        }).reversed());
+        if (RecipeEssentials.config.getCommonConfig().enableBetterRecipebookSorting)
+        {
+            resultRecipes.sort(Comparator.<RecipeCollection>comparingInt(r -> {
+                int sum = 0;
+                for (final Recipe<?> recipe : r.getRecipes())
+                {
+                    sum += USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0);
+                }
+                return (r.hasCraftable() ? sum + 1000 : sum);
+            }).reversed());
+        }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
