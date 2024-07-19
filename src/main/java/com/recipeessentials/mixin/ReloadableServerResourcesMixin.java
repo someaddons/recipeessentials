@@ -1,11 +1,11 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.RecipeEssentials;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.common.crafting.conditions.ICondition;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -22,17 +22,16 @@ public class ReloadableServerResourcesMixin
     @Mutable
     private RecipeManager recipes;
 
-    @Shadow
-    @Final
-    private ICondition.IContext context;
-
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(
-      final RegistryAccess.Frozen p_206857_,
+      final RegistryAccess.Frozen registryAccess,
       final FeatureFlagSet p_250695_,
       final Commands.CommandSelection p_206858_,
       final int p_206859_, final CallbackInfo ci)
     {
-        recipes = new com.recipeessentials.recipecache.RecipeManager(context);
+        if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
+        {
+            recipes = new com.recipeessentials.recipecache.RecipeManager(registryAccess);
+        }
     }
 }
