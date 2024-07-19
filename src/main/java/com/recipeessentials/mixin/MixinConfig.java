@@ -26,14 +26,9 @@ public class MixinConfig implements IMixinConfigPlugin
     public boolean shouldApplyMixin(final String targetClassName, final String mixinClassName)
     {
         if (mixinClassName.contains("ItemStackMixin") || mixinClassName.contains("CompoundNBTMixin") || mixinClassName.contains("ByteArrayTagMixin") || mixinClassName.contains(
-          "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin"))
+          "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin") || mixinClassName.contains("ItemStackFastComparisonMixin"))
         {
             return RecipeEssentials.config.getCommonConfig().fastItemComparisons;
-        }
-
-        if (mixinClassName.contains("ClientBoundRecipesMixin"))
-        {
-            return RecipeEssentials.config.getCommonConfig().smallerRecipePacket;
         }
 
         if (mixinClassName.contains("RecipeManagerMixin"))

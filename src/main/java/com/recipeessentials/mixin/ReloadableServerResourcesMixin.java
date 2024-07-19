@@ -1,5 +1,6 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.RecipeEssentials;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.ReloadableServerResources;
@@ -23,11 +24,14 @@ public class ReloadableServerResourcesMixin
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(
-      final RegistryAccess.Frozen p_206857_,
+      final RegistryAccess.Frozen registryAccess,
       final FeatureFlagSet p_250695_,
       final Commands.CommandSelection p_206858_,
       final int p_206859_, final CallbackInfo ci)
     {
-        recipes = new com.recipeessentials.recipecache.RecipeManager();
+        if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
+        {
+            recipes = new com.recipeessentials.recipecache.RecipeManager(registryAccess);
+        }
     }
 }

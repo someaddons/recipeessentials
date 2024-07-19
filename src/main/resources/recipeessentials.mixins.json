@@ -5,7 +5,7 @@
   "mixinPriority": 200,
   "plugin": "com.recipeessentials.mixin.MixinConfig",
   "mixins": [
-    "ClientBoundRecipesMixin",
+    "ItemStackFastComparisonMixin",
     "RecipebookMixin",
     "ReloadableServerResourcesMixin",
     "ServerRecipeBookMixin",

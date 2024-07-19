@@ -3,7 +3,7 @@ package com.recipeessentials.mixin;
 import com.recipeessentials.RecipeEssentials;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.stats.RecipeBook;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,10 +22,10 @@ public class RecipeCollectionMixin
         }
     }
 
-    @Redirect(method = "updateKnownRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
-    private boolean recipeessentials$hasKnown(final RecipeBook instance, final Recipe<?> recipe)
+    @Redirect(method = "updateKnownRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z"))
+    private boolean recipeessentials$hasKnown(final RecipeBook instance, final RecipeHolder<?> recipe)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && !recipe.isSpecial())
+        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && !recipe.value().isSpecial())
         {
             return true;
         }
@@ -33,8 +33,8 @@ public class RecipeCollectionMixin
         return instance.contains(recipe);
     }
 
-    @Redirect(method = "canCraft", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
-    private boolean recipeessentials$contains(final RecipeBook instance, final Recipe<?> recipe)
+    @Redirect(method = "canCraft", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z"))
+    private boolean recipeessentials$contains(final RecipeBook instance, final RecipeHolder<?> recipe)
     {
         if (RecipeEssentials.config.getCommonConfig().recipebookShowAll)
         {

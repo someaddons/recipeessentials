@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.world.inventory.RecipeBookMenu;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,9 +29,9 @@ public class RecipebookSortingMixin
     private RecipeBookPage recipeBookPage;
 
     @Shadow
-    protected RecipeBookMenu<?> menu;
+    protected RecipeBookMenu menu;
     @Unique
-    private   Recipe            lastRecipe = null;
+    private   RecipeHolder   lastRecipe = null;
 
     @Inject(method = "mouseClicked", at = @At("HEAD"))
     private void recipeessentials$onSelectedRecipe(
@@ -42,11 +42,11 @@ public class RecipebookSortingMixin
     {
         if (RecipeEssentials.config.getCommonConfig().enableBetterRecipebookSorting)
         {
-            Recipe<?> recipe = this.recipeBookPage.getLastClickedRecipe();
+            RecipeHolder<?> recipe = this.recipeBookPage.getLastClickedRecipe();
 
             if (lastRecipe != recipe && recipe != null)
             {
-                USED_GHOST_RECIPES.put(recipe.getId(), USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0) + 1);
+                USED_GHOST_RECIPES.put(recipe.id(), USED_GHOST_RECIPES.getOrDefault(recipe.id(), 0) + 1);
                 lastRecipe = recipe;
             }
         }
@@ -59,9 +59,9 @@ public class RecipebookSortingMixin
         {
             resultRecipes.sort(Comparator.<RecipeCollection>comparingInt(r -> {
                 int sum = 0;
-                for (final Recipe<?> recipe : r.getRecipes())
+                for (final RecipeHolder<?> recipe : r.getRecipes())
                 {
-                    sum += USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0);
+                    sum += USED_GHOST_RECIPES.getOrDefault(recipe.id(), 0);
                 }
                 return (r.hasCraftable() ? sum + 1000 : sum);
             }).reversed());

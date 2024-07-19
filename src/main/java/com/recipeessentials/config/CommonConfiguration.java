@@ -8,7 +8,6 @@ public class CommonConfiguration implements ICommonConfig
     public boolean disableRecipebook             = false;
     public boolean fastItemComparisons           = true;
     public boolean enableBetterRecipebookSorting = true;
-    public boolean smallerRecipePacket           = false;
     public boolean cacheRecipes                  = true;
     public boolean logCachingErrors              = false;
     public boolean recipebookShowAll             = true;
@@ -42,12 +41,6 @@ public class CommonConfiguration implements ICommonConfig
         entry2.addProperty("fastItemComparisons", fastItemComparisons);
         root.add("fastItemComparisons", entry2);
 
-        final JsonObject entry4 = new JsonObject();
-        entry4.addProperty("desc:",
-          "Reduces the size of the recipe packet, to prevent errors on too large packets and helps bad connections, requires the mod to be present on both client and server, disable on mod conflicts: default:false");
-        entry4.addProperty("smallerRecipePacket", smallerRecipePacket);
-        root.add("smallerRecipePacket", entry4);
-
         final JsonObject entry5 = new JsonObject();
         entry5.addProperty("desc:", "Caches recipe lookups to greatly improve lookup speed: default:true");
         entry5.addProperty("cacheRecipes", cacheRecipes);
@@ -66,7 +59,6 @@ public class CommonConfiguration implements ICommonConfig
         disableRecipebook = data.get("disableRecipebook").getAsJsonObject().get("disableRecipebook").getAsBoolean();
         fastItemComparisons = data.get("fastItemComparisons").getAsJsonObject().get("fastItemComparisons").getAsBoolean();
         enableBetterRecipebookSorting = data.get("enableBetterRecipebookSorting").getAsJsonObject().get("enableBetterRecipebookSorting").getAsBoolean();
-        smallerRecipePacket = data.get("smallerRecipePacket").getAsJsonObject().get("smallerRecipePacket").getAsBoolean();
         cacheRecipes = data.get("cacheRecipes").getAsJsonObject().get("cacheRecipes").getAsBoolean();
         recipebookShowAll = data.get("recipebookShowAll").getAsJsonObject().get("recipebookShowAll").getAsBoolean();
         logCachingErrors = data.get("logCachingErrors").getAsJsonObject().get("logCachingErrors").getAsBoolean();

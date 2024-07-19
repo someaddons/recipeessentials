@@ -1,11 +1,10 @@
 package com.recipeessentials.mixin;
 
-import com.mojang.authlib.GameProfile;
+import com.recipeessentials.RecipeEssentials;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.telemetry.WorldSessionTelemetryManager;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.Connection;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.spongepowered.asm.mixin.Final;
@@ -17,23 +16,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
-public class ClientPacketListenerMixin
+public abstract class ClientPacketListenerMixin
 {
     @Shadow
     @Final
     @Mutable
     private RecipeManager recipeManager;
 
+    @Shadow
+    public abstract RegistryAccess.Frozen registryAccess();
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
-    private void createManager(
-      final Minecraft p_253924_,
-      final Screen p_254239_,
-      final Connection p_253614_,
-      final ServerData p_254072_,
-      final GameProfile p_254079_,
-      final WorldSessionTelemetryManager p_262115_,
-      final CallbackInfo ci)
+    private void createManager(final Minecraft minecraft, final Connection connection, final CommonListenerCookie commonListenerCookie, final CallbackInfo ci)
     {
-        recipeManager = new com.recipeessentials.recipecache.RecipeManager();
+        if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
+        {
+            recipeManager = new com.recipeessentials.recipecache.RecipeManager(registryAccess());
+        }
     }
 }
