@@ -1,7 +1,5 @@
 package com.recipeessentials.mixin;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.recipeessentials.nbt.IPrototypeHashcode;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import net.minecraft.core.component.DataComponentMap;
@@ -38,10 +36,10 @@ public class ItemStackFastComparisonMixin implements IPrototypeHashcode
         return prototypeHashCode + this.patch.hashCode() * 31;
     }
 
-    @WrapWithCondition(method = "equals", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap;equals(Ljava/lang/Object;)Z"))
-    private boolean onPrototypeCompare(final DataComponentMap ourPrototype, final Object otherPrototype,Object other)
+    @Redirect(method = "equals", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap;equals(Ljava/lang/Object;)Z"))
+    private boolean onPrototypeCompare(final DataComponentMap ourPrototype, final Object otherPrototype, Object other)
     {
-        return prototypeHashCode == ((IPrototypeHashcode)other).protoTypeHashcode() && ourPrototype.equals(otherPrototype);
+        return prototypeHashCode == ((IPrototypeHashcode) other).protoTypeHashcode() && ourPrototype.equals(otherPrototype);
     }
 
     @Override
