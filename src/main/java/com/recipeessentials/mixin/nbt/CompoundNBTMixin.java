@@ -4,11 +4,13 @@ import com.recipeessentials.nbt.IEqualTag;
 import com.recipeessentials.nbt.IParentAwareTag;
 import com.recipeessentials.nbt.IParentTag;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -81,6 +83,26 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
         }
     }
 
+    @Inject(method = "getCompound", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER))
+    public void getCompound(final String p_128424_, final CallbackInfoReturnable<Tag> cir)
+    {
+        Tag v = cir.getReturnValue();
+        if (v instanceof IParentAwareTag)
+        {
+            ((IParentAwareTag) v).setParent(this);
+        }
+    }
+
+    @Inject(method = "getList", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER))
+    public void getList(final String p_128438_, final int p_128439_, final CallbackInfoReturnable<ListTag> cir)
+    {
+        Tag v = cir.getReturnValue();
+        if (v instanceof IParentAwareTag)
+        {
+            ((IParentAwareTag) v).setParent(this);
+        }
+    }
+
     @Inject(method = "put", at = @At("RETURN"))
     public void put(final String p_128366_, final Tag tag, final CallbackInfoReturnable<Tag> cir)
     {
@@ -88,6 +110,12 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
         {
             ((IParentAwareTag) tag).setParent(this);
         }
+        markDirty();
+    }
+
+    @Inject(method = "remove", at = @At("RETURN"))
+    public void remove(final String p_128474_, final CallbackInfo ci)
+    {
         markDirty();
     }
 
