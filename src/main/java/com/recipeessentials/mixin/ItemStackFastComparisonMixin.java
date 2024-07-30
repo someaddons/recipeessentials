@@ -1,5 +1,6 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.nbt.IPrototypeHashcode;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(PatchedDataComponentMap.class)
-public class ItemStackFastComparisonMixin
+public class ItemStackFastComparisonMixin implements IPrototypeHashcode
 {
     @Shadow
     private Reference2ObjectMap<DataComponentType<?>, Optional<?>> patch;
@@ -36,8 +37,14 @@ public class ItemStackFastComparisonMixin
     }
 
     @Redirect(method = "equals", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap;equals(Ljava/lang/Object;)Z"))
-    private boolean onPrototypeCompare(final DataComponentMap instance, final Object other)
+    private boolean onPrototypeCompare(final DataComponentMap ourPrototype, final Object otherPrototype, Object other)
     {
-        return hashCode() == other.hashCode() && instance.equals(other);
+        return prototypeHashCode == ((IPrototypeHashcode) other).protoTypeHashcode() && ourPrototype.equals(otherPrototype);
+    }
+
+    @Override
+    public int protoTypeHashcode()
+    {
+        return prototypeHashCode;
     }
 }
