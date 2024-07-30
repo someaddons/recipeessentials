@@ -1,7 +1,7 @@
 {
   "required": false,
   "package": "com.recipeessentials.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "recipeessentials.refmap.json",
   "mixinPriority": 200,
   "plugin": "com.recipeessentials.mixin.MixinConfig",
@@ -11,9 +11,7 @@
     "ReloadableServerResourcesMixin",
     "ServerRecipeBookMixin",
     "nbt.ByteArrayTagMixin",
-    "nbt.CompoundNBTMixin",
     "nbt.IntArrayTagMixin",
-    "nbt.ItemStackMixin",
     "nbt.ListTagMixin",
     "nbt.LongArrayTagMixin"
   ],
