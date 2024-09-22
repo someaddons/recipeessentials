@@ -1,6 +1,7 @@
 package com.recipeessentials.mixin;
 
 import com.recipeessentials.RecipeEssentials;
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -28,6 +29,12 @@ public class MixinConfig implements IMixinConfigPlugin
         if (mixinClassName.contains("ItemStackMixin") || mixinClassName.contains("CompoundNBTMixin") || mixinClassName.contains("ByteArrayTagMixin") || mixinClassName.contains(
           "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin") || mixinClassName.contains("ItemStackFastComparisonMixin"))
         {
+            if (FabricLoader.getInstance().isModLoaded("owo"))
+            {
+                RecipeEssentials.LOGGER.warn("Disabling fastItemComparison feature, due to the Owo mod's faulty implementation breaking it");
+                return false;
+            }
+
             return RecipeEssentials.config.getCommonConfig().fastItemComparisons;
         }
 

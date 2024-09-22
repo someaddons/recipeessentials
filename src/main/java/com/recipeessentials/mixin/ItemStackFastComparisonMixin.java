@@ -1,5 +1,6 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.RecipeEssentials;
 import com.recipeessentials.nbt.IPrototypeHashcode;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import net.minecraft.core.component.DataComponentMap;
@@ -19,6 +20,9 @@ public class ItemStackFastComparisonMixin implements IPrototypeHashcode
     @Shadow
     private Reference2ObjectMap<DataComponentType<?>, Optional<?>> patch;
 
+    @Shadow
+    @Final
+    private DataComponentMap prototype;
     @Unique
     @Final
     @Mutable
@@ -33,7 +37,13 @@ public class ItemStackFastComparisonMixin implements IPrototypeHashcode
     @Overwrite
     public int hashCode()
     {
-        return prototypeHashCode + this.patch.hashCode() * 31;
+        int hash = prototypeHashCode + this.patch.hashCode() * 31;
+        if (hash != this.prototype.hashCode() + this.patch.hashCode() * 31)
+        {
+            RecipeEssentials.LOGGER.warn("Wrong hashcode! cached:" + prototypeHashCode + " prototype:" + prototype);
+        }
+
+        return hash;
     }
 
     @Redirect(method = "equals", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap;equals(Ljava/lang/Object;)Z"))
