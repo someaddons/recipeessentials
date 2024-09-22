@@ -22,6 +22,10 @@ public class ReloadableServerResourcesMixin
     @Mutable
     private RecipeManager recipes;
 
+    @Shadow
+    @Final
+    private ReloadableServerResources.ConfigurableRegistryLookup registryLookup;
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(
       final RegistryAccess.Frozen registryAccess,
@@ -31,7 +35,7 @@ public class ReloadableServerResourcesMixin
     {
         if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
         {
-            recipes = new com.recipeessentials.recipecache.RecipeManager(registryAccess);
+            recipes = new com.recipeessentials.recipecache.RecipeManager(registryLookup);
         }
     }
 }
