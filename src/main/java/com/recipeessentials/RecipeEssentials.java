@@ -3,6 +3,8 @@ package com.recipeessentials;
 import com.cupboard.config.CupboardConfig;
 import com.recipeessentials.config.CommonConfiguration;
 import com.recipeessentials.event.EventHandler;
+import com.recipeessentials.polymorphcompat.Polymorph;
+import com.recipeessentials.recipecache.RecipeManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -39,7 +41,7 @@ public class RecipeEssentials
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         if (FMLLoader.getLoadingModList().getModFileById("polymorph") != null)
         {
-            polymorphCompat = true;
+            RecipeManager.compat = new Polymorph();
         }
     }
 

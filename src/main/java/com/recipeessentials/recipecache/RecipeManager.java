@@ -31,6 +31,19 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
         super(net.minecraftforge.common.crafting.conditions.ICondition.IContext.EMPTY);
     }
 
+    public static IRecipeCompat compat = new IRecipeCompat()
+    {
+        @Override
+        public <C extends Container, T extends Recipe<C>> Optional getRecipe(
+          final RecipeType<T> recipeTypeIn,
+          final C inventoryIn,
+          final Level worldIn,
+          final CachedRecipeList recipes)
+        {
+            return Optional.empty();
+        }
+    };
+
     /**
      * Map of hash key to recipe list matching it
      */
@@ -44,16 +57,18 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     @Override
     public <C extends Container, T extends Recipe<C>> Optional getRecipeFor(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn)
     {
-        if (RecipeEssentials.polymorphCompat)
-        {
-            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn);
-        }
-
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
         if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
         {
             recipes.useCount++;
+
+            final Optional compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes);
+            if (compatRecipe.isPresent())
+            {
+                return compatRecipe;
+            }
+
             for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
                 final Recipe recipe = recipes.recipes.get(i);
@@ -65,32 +80,10 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
         }
         else
         {
-            //TODO Do we need both this and the result caching below? esp with usecount? think it should just do this once when missing?
             getRecipesFor(recipeTypeIn, inventoryIn, worldIn);
         }
 
         final Optional<T> result = super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn);
-
-        if (result.isPresent())
-        {
-            if (hash != -1)
-            {
-                CachedRecipeList recipeList = recipeCache.get(hash);
-                if (recipeList == null)
-                {
-                    recipeList = new CachedRecipeList(recipeTypeIn, inventoryIn);
-                    recipeCache.put(hash, recipeList);
-                }
-
-                recipeList.useCount++;
-                if (!recipeList.recipes.contains(result.get()))
-                {
-                    recipeList.recipes.add(result.get());
-                    recipeList.recipes.sort(Comparator.comparingInt(recipeIndexes::getInt));
-                }
-            }
-        }
-
         return result;
     }
 
@@ -99,18 +92,20 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
       final RecipeType<T> recipeTypeIn,
       final C inventoryIn,
       final Level worldIn,
-      final ResourceLocation p_220252_)
+      final ResourceLocation resourceLocation)
     {
-        if (RecipeEssentials.polymorphCompat)
-        {
-            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, p_220252_);
-        }
-
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
         if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
         {
             recipes.useCount++;
+
+            final Optional<Recipe> compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes);
+            if (compatRecipe.isPresent())
+            {
+                return Optional.of(new Pair<>(compatRecipe.get().getId(), (T) compatRecipe.get()));
+            }
+
             for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
                 final Recipe recipe = recipes.recipes.get(i);
@@ -125,7 +120,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
             getRecipesFor(recipeTypeIn, inventoryIn, worldIn);
         }
 
-        final Optional<Pair<ResourceLocation, T>> result = super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, p_220252_);
+        final Optional<Pair<ResourceLocation, T>> result = super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, resourceLocation);
 
         if (result.isPresent())
         {
@@ -202,6 +197,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
                     }
 
                     matches.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
+                    result.sort(Comparator.comparing((recipe) -> recipe.getResultItem(worldIn.registryAccess()).getDescriptionId()));
                     if (!result.equals(matches))
                     {
                         recipeList.report(recipeTypeIn, inventoryIn, result);
