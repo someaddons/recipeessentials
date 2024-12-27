@@ -23,7 +23,7 @@ public class RecipeEssentials implements ModInitializer
     @Override
     public void onInitialize()
     {
-        if (FabricLoader.getInstance().isModLoaded("pehkui"))
+        if (FabricLoader.getInstance().isModLoaded("polymorph"))
         {
             RecipeManager.compat = new Polymorph();
         }
