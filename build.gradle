@@ -38,6 +38,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation("curse.maven:cupboard-326652:5477517")
     modImplementation("curse.maven:spark-361579:5434152")
+    modImplementation("curse.maven:polymorph-388800:5995378")
     modImplementation 'me.lucko:fabric-permissions-api:0.3.1'
 }
 
