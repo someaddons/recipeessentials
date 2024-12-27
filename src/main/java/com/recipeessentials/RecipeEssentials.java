@@ -2,6 +2,8 @@ package com.recipeessentials;
 
 import com.cupboard.config.CupboardConfig;
 import com.recipeessentials.config.CommonConfiguration;
+import com.recipeessentials.polymorphcompat.Polymorph;
+import com.recipeessentials.recipecache.RecipeManager;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -27,7 +29,7 @@ public class RecipeEssentials
     {
         if (FMLLoader.getLoadingModList().getModFileById("polymorph") != null)
         {
-            polymorphCompat = true;
+            RecipeManager.compat = new Polymorph();
         }
     }
 }

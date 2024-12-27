@@ -28,6 +28,19 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
         super(registryAccess);
     }
 
+    public static IRecipeCompat compat = new IRecipeCompat()
+    {
+        @Override
+        public <C extends RecipeInput, T extends Recipe<C>> Optional<RecipeHolder> getRecipe(
+          final RecipeType<T> recipeTypeIn,
+          final C inventoryIn,
+          final Level worldIn,
+          final CachedRecipeList recipes, final RecipeManager recipeManager)
+        {
+            return Optional.empty();
+        }
+    };
+
     /**
      * Map of hash key to recipe list matching it
      */
@@ -45,11 +58,6 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
       Level worldIn,
       @Nullable RecipeHolder<T> recipeHolder)
     {
-        if (RecipeEssentials.polymorphCompat)
-        {
-            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, recipeHolder);
-        }
-
         if (inventoryIn.isEmpty())
         {
             return Optional.empty();
@@ -57,9 +65,16 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
 
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
         {
             recipes.useCount++;
+
+            final Optional compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes, (RecipeManager)(Object)this);
+            if (compatRecipe.isPresent())
+            {
+                return compatRecipe;
+            }
+
             for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
                 final RecipeHolder recipe = recipes.recipes.get(i);
@@ -71,7 +86,6 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
         }
         else
         {
-            //TODO Do we need both this and the result caching below? esp with usecount? think it should just do this once when missing?
             getRecipesFor(recipeTypeIn, inventoryIn, worldIn);
         }
 
@@ -107,16 +121,18 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
       final Level worldIn,
       final ResourceLocation resourceLocation)
     {
-        if (RecipeEssentials.polymorphCompat)
-        {
-            return super.getRecipeFor(recipeTypeIn, inventoryIn, worldIn, resourceLocation);
-        }
-
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
         {
             recipes.useCount++;
+
+            final Optional compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes, (RecipeManager) (Object) this);
+            if (compatRecipe.isPresent())
+            {
+                return compatRecipe;
+            }
+
             for (int i = 0, recipesSize = recipes.recipes.size(); i < recipesSize; i++)
             {
                 final RecipeHolder recipe = recipes.recipes.get(i);
@@ -161,7 +177,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     public <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> getRecipesFor(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn)
     {
         final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
         {
             recipes.useCount++;
             List<RecipeHolder<T>> matches = new ArrayList<>();
