@@ -2,6 +2,8 @@ package com.recipeessentials;
 
 import com.cupboard.config.CupboardConfig;
 import com.recipeessentials.config.CommonConfiguration;
+import com.recipeessentials.polymorphcompat.Polymorph;
+import com.recipeessentials.recipecache.RecipeManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +25,7 @@ public class RecipeEssentials implements ModInitializer
     {
         if (FabricLoader.getInstance().isModLoaded("pehkui"))
         {
-            polymorphCompat = true;
+            RecipeManager.compat = new Polymorph();
         }
     }
 
