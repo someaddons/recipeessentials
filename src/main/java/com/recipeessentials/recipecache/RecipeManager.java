@@ -65,7 +65,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
 
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
         {
             recipes.useCount++;
 
@@ -123,7 +123,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     {
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
         {
             recipes.useCount++;
 
@@ -177,7 +177,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     public <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> getRecipesFor(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn)
     {
         final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 3) != 0)
+        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
         {
             recipes.useCount++;
             List<RecipeHolder<T>> matches = new ArrayList<>();

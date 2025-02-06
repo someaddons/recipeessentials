@@ -8,6 +8,7 @@
   "mixins": [
     "ItemStackFastComparisonMixin",
     "RecipebookMixin",
+    "RecipeManagerMixin",
     "ReloadableServerResourcesMixin",
     "ServerRecipeBookMixin",
     "nbt.ByteArrayTagMixin",
