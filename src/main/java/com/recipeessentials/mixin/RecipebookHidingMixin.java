@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ public class RecipebookHidingMixin
     @Inject(method = "isVisible", at = @At("HEAD"), cancellable = true)
     private void recipeessentials$onInit(final CallbackInfoReturnable<Boolean> cir)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook)
+        if (CommonConfiguration.config.getCommonConfig().disableRecipebook)
         {
             cir.setReturnValue(false);
         }

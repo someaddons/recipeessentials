@@ -1,7 +1,5 @@
 package com.recipeessentials;
 
-import com.cupboard.config.CupboardConfig;
-import com.recipeessentials.config.CommonConfiguration;
 import com.recipeessentials.event.EventHandler;
 import com.recipeessentials.polymorphcompat.Polymorph;
 import com.recipeessentials.recipecache.RecipeManager;
@@ -29,7 +27,6 @@ public class RecipeEssentials
     public static       List<byte[]>                        data            = new ArrayList<>();
     public static final String                              MOD_ID          = "recipeessentials";
     public static final Logger                              LOGGER          = LogManager.getLogger();
-    public static       CupboardConfig<CommonConfiguration> config          = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
     public static       Random                              rand            = new Random();
     public static       boolean                             polymorphCompat = false;
 
