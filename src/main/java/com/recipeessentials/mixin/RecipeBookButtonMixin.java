@@ -25,7 +25,7 @@ public abstract class RecipeBookButtonMixin extends Screen
     }
 
     @Override
-    protected <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
     {
         if (CommonConfiguration.config.getCommonConfig().disableRecipebook
               && ((Object) this instanceof CraftingScreen || (Object) this instanceof InventoryScreen || (Object) this instanceof EffectRenderingInventoryScreen)
@@ -34,7 +34,6 @@ public abstract class RecipeBookButtonMixin extends Screen
             return widget;
         }
 
-        this.renderables.add(widget);
-        return this.addWidget(widget);
+        return super.addRenderableWidget(widget);
     }
 }
