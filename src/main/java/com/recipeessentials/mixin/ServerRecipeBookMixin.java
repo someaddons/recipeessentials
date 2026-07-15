@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.network.protocol.game.ClientboundRecipePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +18,7 @@ public class ServerRecipeBookMixin
     @Inject(method = "sendInitialRecipeBook", at = @At("HEAD"), cancellable = true)
     private void recipeessentials$disableRecipebookInit(final ServerPlayer p_12790_, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook || RecipeEssentials.config.getCommonConfig().recipebookShowAll)
+        if (CommonConfiguration.config.getCommonConfig().disableRecipebook || CommonConfiguration.config.getCommonConfig().recipebookShowAll)
         {
             ci.cancel();
         }
@@ -30,7 +30,7 @@ public class ServerRecipeBookMixin
       final ServerPlayer p_12803_,
       final List<ResourceLocation> p_12804_, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook || RecipeEssentials.config.getCommonConfig().recipebookShowAll)
+        if (CommonConfiguration.config.getCommonConfig().disableRecipebook || CommonConfiguration.config.getCommonConfig().recipebookShowAll)
         {
             ci.cancel();
         }

@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.world.item.crafting.Recipe;
@@ -16,7 +16,7 @@ public class RecipeCollectionMixin
     @Inject(method = "hasKnownRecipes", at = @At("HEAD"), cancellable = true)
     private void recipeessentials$hasKnown(final CallbackInfoReturnable<Boolean> cir)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll)
+        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll)
         {
             cir.setReturnValue(true);
         }
@@ -25,7 +25,7 @@ public class RecipeCollectionMixin
     @Redirect(method = "updateKnownRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
     private boolean recipeessentials$hasKnown(final RecipeBook instance, final Recipe<?> recipe)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && !recipe.isSpecial())
+        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll && !recipe.isSpecial())
         {
             return true;
         }
@@ -36,7 +36,7 @@ public class RecipeCollectionMixin
     @Redirect(method = "canCraft", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
     private boolean recipeessentials$contains(final RecipeBook instance, final Recipe<?> recipe)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll)
+        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll)
         {
             return true;
         }

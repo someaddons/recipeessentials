@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -28,17 +28,17 @@ public class MixinConfig implements IMixinConfigPlugin
         if (mixinClassName.contains("ItemStackMixin") || mixinClassName.contains("CompoundNBTMixin") || mixinClassName.contains("ByteArrayTagMixin") || mixinClassName.contains(
           "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin"))
         {
-            return RecipeEssentials.config.getCommonConfig().fastItemComparisons;
+            return CommonConfiguration.config.getCommonConfig().fastItemComparisons;
         }
 
         if (mixinClassName.contains("ClientBoundRecipesMixin"))
         {
-            return RecipeEssentials.config.getCommonConfig().smallerRecipePacket;
+            return CommonConfiguration.config.getCommonConfig().smallerRecipePacket;
         }
 
         if (mixinClassName.contains("RecipeManagerMixin"))
         {
-            return RecipeEssentials.config.getCommonConfig().cacheRecipes;
+            return CommonConfiguration.config.getCommonConfig().cacheRecipes;
         }
 
         return true;

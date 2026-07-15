@@ -1,7 +1,5 @@
 package com.recipeessentials;
 
-import com.cupboard.config.CupboardConfig;
-import com.recipeessentials.config.CommonConfiguration;
 import com.recipeessentials.polymorphcompat.Polymorph;
 import com.recipeessentials.recipecache.RecipeManager;
 import net.fabricmc.api.ModInitializer;
@@ -16,7 +14,6 @@ public class RecipeEssentials implements ModInitializer
 {
     public static final String                              MOD_ID = "recipeessentials";
     public static final Logger                              LOGGER = LogManager.getLogger(MOD_ID);
-    public static       CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
     public static       Random                              rand   = new Random();
     public static       boolean                             polymorphCompat = false;
 

@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -27,7 +27,7 @@ public abstract class RecipeBookButtonMixin extends Screen
     @Override
     protected <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
     {
-        if (RecipeEssentials.config.getCommonConfig().disableRecipebook
+        if (CommonConfiguration.config.getCommonConfig().disableRecipebook
               && ((Object) this instanceof CraftingScreen || (Object) this instanceof InventoryScreen || (Object) this instanceof EffectRenderingInventoryScreen)
               && widget instanceof ImageButton && ((ImageButton) widget).resourceLocation.equals(RECIPE_BUTTON_LOCATION))
         {
