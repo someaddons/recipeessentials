@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.stats.ServerRecipeBook;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -13,7 +13,8 @@ public class RecipebookMixin {
     @Redirect(method = "recipeClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/ServerRecipeBook;contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z"))
     private boolean recipeessentials$contains(final ServerRecipeBook instance, final RecipeHolder recipe)
     {
-        if (recipe != null && RecipeEssentials.config.getCommonConfig().recipebookShowAll && !RecipeEssentials.config.getCommonConfig().disableRecipebook) {
+        if (recipe != null && CommonConfiguration.config.getCommonConfig().recipebookShowAll && !CommonConfiguration.config.getCommonConfig().disableRecipebook)
+        {
             return true;
         }
 

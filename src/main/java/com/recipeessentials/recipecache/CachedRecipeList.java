@@ -1,6 +1,7 @@
 package com.recipeessentials.recipecache;
 
 import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -47,7 +48,7 @@ public class CachedRecipeList
 
     public <T extends Recipe<C>, C extends RecipeInput> void report(final RecipeType recipeTypeIn, final RecipeInput inventoryIn, final List<RecipeHolder<T>> recipes)
     {
-        if (!reported && RecipeEssentials.config.getCommonConfig().logCachingErrors)
+        if (!reported && CommonConfiguration.config.getCommonConfig().logCachingErrors)
         {
             reported = true;
             CachedRecipeList temp = new CachedRecipeList(recipeTypeIn, inventoryIn);

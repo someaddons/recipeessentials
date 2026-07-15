@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -18,7 +18,7 @@ public class ClientRecipeBookMixin
     @Inject(method = "contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z", at = @At("HEAD"), cancellable = true)
     public void recipeessentials$containsRecipe(final RecipeHolder<?> recipe, final CallbackInfoReturnable<Boolean> cir)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && recipe != null && !recipe.value().isSpecial())
+        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll && recipe != null && !recipe.value().isSpecial())
         {
             cir.setReturnValue(true);
         }
@@ -27,7 +27,7 @@ public class ClientRecipeBookMixin
     @Inject(method = "contains(Lnet/minecraft/resources/ResourceLocation;)Z", at = @At("HEAD"), cancellable = true)
     public void recipeessentials$contains(final ResourceLocation p_12712_, final CallbackInfoReturnable<Boolean> cir)
     {
-        if (RecipeEssentials.config.getCommonConfig().recipebookShowAll && p_12712_ != null)
+        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll && p_12712_ != null)
         {
             cir.setReturnValue(true);
         }
