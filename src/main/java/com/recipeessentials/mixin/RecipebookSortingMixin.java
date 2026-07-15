@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
@@ -40,7 +40,7 @@ public class RecipebookSortingMixin
       final int p_100296_,
       final CallbackInfoReturnable<Boolean> cir)
     {
-        if (RecipeEssentials.config.getCommonConfig().enableBetterRecipebookSorting)
+        if (CommonConfiguration.config.getCommonConfig().enableBetterRecipebookSorting)
         {
             RecipeHolder<?> recipe = this.recipeBookPage.getLastClickedRecipe();
 
@@ -55,7 +55,7 @@ public class RecipebookSortingMixin
     @Inject(method = "updateCollections", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/recipebook/RecipeBookPage;updateCollections(Ljava/util/List;Z)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void recipeessentials$sortCollection(final boolean p_100383_, final CallbackInfo ci, List<RecipeCollection> list, List<RecipeCollection> resultRecipes)
     {
-        if (RecipeEssentials.config.getCommonConfig().enableBetterRecipebookSorting)
+        if (CommonConfiguration.config.getCommonConfig().enableBetterRecipebookSorting)
         {
             resultRecipes.sort(Comparator.<RecipeCollection>comparingInt(r -> {
                 int sum = 0;

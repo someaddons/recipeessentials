@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
@@ -29,7 +29,7 @@ public abstract class ClientPacketListenerMixin
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(final Minecraft minecraft, final Connection connection, final CommonListenerCookie commonListenerCookie, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
+        if (CommonConfiguration.config.getCommonConfig().cacheRecipes)
         {
             recipeManager = new com.recipeessentials.recipecache.RecipeManager(registryAccess());
         }

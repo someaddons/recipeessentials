@@ -1,7 +1,5 @@
 package com.recipeessentials;
 
-import com.cupboard.config.CupboardConfig;
-import com.recipeessentials.config.CommonConfiguration;
 import com.recipeessentials.polymorphcompat.Polymorph;
 import com.recipeessentials.recipecache.RecipeManager;
 import net.neoforged.bus.api.IEventBus;
@@ -19,11 +17,9 @@ import static com.recipeessentials.RecipeEssentials.MOD_ID;
 @Mod(MOD_ID)
 public class RecipeEssentials
 {
-    public static final String                              MOD_ID          = "recipeessentials";
-    public static final Logger                              LOGGER          = LogManager.getLogger();
-    public static       CupboardConfig<CommonConfiguration> config          = new CupboardConfig<>(MOD_ID, new CommonConfiguration());
-    public static       Random                              rand            = new Random();
-    public static       boolean                             polymorphCompat = false;
+    public static final String  MOD_ID          = "recipeessentials";
+    public static final Logger  LOGGER          = LogManager.getLogger();
+    public static       Random  rand            = new Random();
 
     public RecipeEssentials(IEventBus modEventBus, ModContainer modContainer)
     {

@@ -1,6 +1,7 @@
 package com.recipeessentials.mixin;
 
 import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.neoforged.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -35,12 +36,12 @@ public class MixinConfig implements IMixinConfigPlugin
                 return false;
             }
 
-            return RecipeEssentials.config.getCommonConfig().fastItemComparisons;
+            return CommonConfiguration.config.getCommonConfig().fastItemComparisons;
         }
 
         if (mixinClassName.contains("RecipeManagerMixin"))
         {
-            return RecipeEssentials.config.getCommonConfig().cacheRecipes;
+            return CommonConfiguration.config.getCommonConfig().cacheRecipes;
         }
 
         return true;

@@ -1,10 +1,13 @@
 package com.recipeessentials.config;
 
+import com.cupboard.config.CupboardConfig;
 import com.cupboard.config.ICommonConfig;
 import com.google.gson.JsonObject;
 
 public class CommonConfiguration implements ICommonConfig
 {
+    public static CupboardConfig<CommonConfiguration> config = new CupboardConfig<>("recipeessentials", new CommonConfiguration());
+
     public boolean disableRecipebook             = false;
     public boolean fastItemComparisons           = true;
     public boolean enableBetterRecipebookSorting = true;

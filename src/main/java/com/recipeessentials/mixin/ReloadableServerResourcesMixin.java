@@ -1,6 +1,6 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.RecipeEssentials;
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.ReloadableServerResources;
@@ -33,7 +33,7 @@ public class ReloadableServerResourcesMixin
       final Commands.CommandSelection p_206858_,
       final int p_206859_, final CallbackInfo ci)
     {
-        if (RecipeEssentials.config.getCommonConfig().cacheRecipes)
+        if (CommonConfiguration.config.getCommonConfig().cacheRecipes)
         {
             recipes = new com.recipeessentials.recipecache.RecipeManager(registryLookup);
         }
