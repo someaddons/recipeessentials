@@ -24,7 +24,8 @@ public class CommonConfiguration implements ICommonConfig
         final JsonObject root = new JsonObject();
 
         final JsonObject entry = new JsonObject();
-        entry.addProperty("desc:", "Disables the recipe book entirely, removes the button on client side and removes synced data on server side: default:false");
+        entry.addProperty("desc:",
+            "Disables the recipe book entirely, removes the button on client side and removes synced data on server side eliminating its performance impact. (Could call it removed fully): default:false");
         entry.addProperty("disableRecipebook", disableRecipebook);
         root.add("disableRecipebook", entry);
 
