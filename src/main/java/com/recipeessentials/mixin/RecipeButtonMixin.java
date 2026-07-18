@@ -1,10 +1,7 @@
 package com.recipeessentials.mixin;
 
+import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.screens.recipebook.RecipeButton;
-import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
-import net.minecraft.stats.RecipeBook;
-import net.minecraft.world.inventory.RecipeBookMenu;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,12 +13,19 @@ import java.util.List;
 public class RecipeButtonMixin
 {
     @Shadow
-    private RecipeCollection collection;
+    private int currentIndex;
 
-    @Redirect(method = "getOrderedRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;isFiltering(Lnet/minecraft/world/inventory/RecipeBookMenu;)Z"))
-    private boolean isFilter(final RecipeBook instance, final RecipeBookMenu p_12690_)
+    @Redirect(method = "renderWidget", at = @At(value = "INVOKE", target = "Ljava/util/List;get(I)Ljava/lang/Object;"))
+    private Object getFirst(final List instance, final int i)
     {
-        List<RecipeHolder<?>> list = this.collection.getDisplayRecipes(true);
-        return !list.isEmpty();
+        if (CommonConfiguration.config.getCommonConfig().enableBetterRecipebookSorting)
+        {
+            currentIndex = 0;
+            return instance.get(0);
+        }
+        else
+        {
+            return instance.get(i);
+        }
     }
 }
