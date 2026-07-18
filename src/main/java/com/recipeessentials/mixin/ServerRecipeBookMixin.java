@@ -1,6 +1,7 @@
 package com.recipeessentials.mixin;
 
 import com.recipeessentials.config.CommonConfiguration;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundRecipePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
@@ -21,6 +23,15 @@ public class ServerRecipeBookMixin
         if (CommonConfiguration.config.getCommonConfig().disableRecipebook || CommonConfiguration.config.getCommonConfig().recipebookShowAll)
         {
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "toNbt", at = @At("HEAD"), cancellable = true)
+    private void recipeessentials$disableRecipebookNbt(final CallbackInfoReturnable<CompoundTag> cir)
+    {
+        if (CommonConfiguration.config.getCommonConfig().disableRecipebook || CommonConfiguration.config.getCommonConfig().recipebookShowAll)
+        {
+            cir.setReturnValue(new CompoundTag());
         }
     }
 
