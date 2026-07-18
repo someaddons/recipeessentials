@@ -15,7 +15,7 @@ public class CachedRecipeList
     public final List<Recipe>    recipes;
     public final List<ItemStack> originStacks;
     public final RecipeType      originType;
-    public       int             useCount = 0;
+    private int useCount = 0;
     public       boolean         reported = false;
 
     public CachedRecipeList(final List<Recipe> recipes, final List<ItemStack> originStacks, final RecipeType originType)
@@ -60,5 +60,18 @@ public class CachedRecipeList
 
         // Reset successful uses on mismatch
         useCount = 0;
+    }
+
+    public void increaseUsed()
+    {
+        if (useCount < 100)
+        {
+            useCount++;
+        }
+    }
+
+    public int used()
+    {
+        return useCount;
     }
 }
