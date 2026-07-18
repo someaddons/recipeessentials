@@ -42,7 +42,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation("curse.maven:cupboard-326652:4669189")
-    modImplementation("curse.maven:polymorph-388800:5995251")
+    modCompileOnly("curse.maven:polymorph-388800:5995251")
 
 
 }

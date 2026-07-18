@@ -63,7 +63,7 @@ public class RecipebookSortingMixin
                 {
                     sum += USED_GHOST_RECIPES.getOrDefault(recipe.getId(), 0);
                 }
-                return (r.hasCraftable() ? sum + 1000 : sum);
+                return (r.hasCraftable() ? 1000 : sum);
             }).reversed());
         }
     }
