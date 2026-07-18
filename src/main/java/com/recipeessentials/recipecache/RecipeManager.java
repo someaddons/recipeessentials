@@ -65,9 +65,9 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
 
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
+        if (recipes != null && recipes.used() > 10 && RecipeEssentials.rand.nextInt(recipes.used() * 30) != 0)
         {
-            recipes.useCount++;
+            recipes.increaseUsed();
 
             final Optional compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes, (RecipeManager) (Object) this);
             if (compatRecipe.isPresent())
@@ -102,7 +102,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
                     recipeCache.put(hash, recipeList);
                 }
 
-                recipeList.useCount++;
+                recipeList.used();
                 if (!recipeList.recipes.contains(result.get()))
                 {
                     recipeList.recipes.add(result.get());
@@ -123,9 +123,9 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     {
         long hash = calcHash(inventoryIn, recipeTypeIn);
         final CachedRecipeList recipes = recipeCache.get(hash);
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
+        if (recipes != null && recipes.used() > 10 && RecipeEssentials.rand.nextInt(recipes.used() * 30) != 0)
         {
-            recipes.useCount++;
+            recipes.increaseUsed();
 
             final Optional compatRecipe = compat.getRecipe(recipeTypeIn, inventoryIn, worldIn, recipes, (RecipeManager) (Object) this);
             if (compatRecipe.isPresent())
@@ -161,7 +161,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
                     recipeCache.put(hash, recipeList);
                 }
 
-                recipeList.useCount++;
+                recipeList.increaseUsed();
                 if (!recipeList.recipes.contains(result.get()))
                 {
                     recipeList.recipes.add(result.get());
@@ -177,9 +177,9 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
     public <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> getRecipesFor(RecipeType<T> recipeTypeIn, C inventoryIn, Level worldIn)
     {
         final CachedRecipeList recipes = recipeCache.get(calcHash(inventoryIn, recipeTypeIn));
-        if (recipes != null && recipes.useCount > 10 && RecipeEssentials.rand.nextInt(recipes.useCount * 30) != 0)
+        if (recipes != null && recipes.used() > 10 && RecipeEssentials.rand.nextInt(recipes.used() * 30) != 0)
         {
-            recipes.useCount++;
+            recipes.increaseUsed();
             List<RecipeHolder<T>> matches = new ArrayList<>();
 
             for (final RecipeHolder<T> recipe : recipes.recipes)
@@ -230,7 +230,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
                     }
                 }
 
-                recipeList.useCount++;
+                recipeList.increaseUsed();
 
                 boolean added = false;
                 for (final RecipeHolder recipe : result)
