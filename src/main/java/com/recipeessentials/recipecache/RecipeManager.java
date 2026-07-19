@@ -102,7 +102,7 @@ public class RecipeManager extends net.minecraft.world.item.crafting.RecipeManag
                     recipeCache.put(hash, recipeList);
                 }
 
-                recipeList.useCount++;
+                recipeList.increaseUsed();
                 if (!recipeList.recipes.contains(result.get()))
                 {
                     recipeList.recipes.add(result.get());
