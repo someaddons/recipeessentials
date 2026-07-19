@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Polymorph implements IRecipeCompat
@@ -31,7 +31,7 @@ public class Polymorph implements IRecipeCompat
                 IBlockEntityRecipeData maybeData = PolymorphApi.getInstance().getBlockEntityRecipeData(beInventory);
                 if (maybeData != null && !maybeData.isEmpty())
                 {
-                    return Optional.ofNullable(maybeData.getRecipe((RecipeType) recipeTypeIn, inventoryIn, worldIn, (List<RecipeHolder<T>>) (Object) recipes.recipes));
+                    return Optional.ofNullable(maybeData.getRecipe((RecipeType) recipeTypeIn, inventoryIn, worldIn, new ArrayList<>()));
                 }
             }
         }
