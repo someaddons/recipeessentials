@@ -1,11 +1,8 @@
 package com.recipeessentials;
 
-import com.recipeessentials.polymorphcompat.Polymorph;
-import com.recipeessentials.recipecache.RecipeManager;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,9 +20,5 @@ public class RecipeEssentials
 
     public RecipeEssentials(IEventBus modEventBus, ModContainer modContainer)
     {
-        if (FMLLoader.getLoadingModList().getModFileById("polymorph") != null)
-        {
-            RecipeManager.compat = new Polymorph();
-        }
     }
 }

@@ -1,14 +1,12 @@
 {
-  "required": false,
+  "required": true,
   "package": "com.recipeessentials.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "refmap": "recipeessentials.refmap.json",
+  "compatibilityLevel": "JAVA_25",
   "mixinPriority": 200,
   "plugin": "com.recipeessentials.mixin.MixinConfig",
   "mixins": [
     "ItemStackFastComparisonMixin",
     "RecipebookMixin",
-    "RecipeManagerMixin",
     "ReloadableServerResourcesMixin",
     "ServerRecipeBookMixin",
     "nbt.ByteArrayTagMixin",
@@ -17,7 +15,7 @@
     "nbt.LongArrayTagMixin"
   ],
   "client": [
-    "ClientPacketListenerMixin",
+    "ClientRecipeBookMixin",
     "InventoryButtonMixin",
     "RecipeBookButtonMixin",
     "RecipebookHidingMixin",
@@ -26,7 +24,7 @@
     "RecipeCollectionMixin"
   ],
   "injectors": {
-    "defaultRequire": 0
+    "defaultRequire": 1
   },
   "minVersion": "0.8"
 }

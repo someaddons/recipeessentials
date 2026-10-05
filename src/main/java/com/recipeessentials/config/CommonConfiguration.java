@@ -36,7 +36,7 @@ public class CommonConfiguration implements ICommonConfig
 
         final JsonObject entry8 = new JsonObject();
         entry8.addProperty("desc:",
-          "Enables the recipe book to show all recipes from the get go, also enables modded recipes to show and disables network/login overhead: default:true");
+          "Shows all available recipe displays from login, including modded recipes, and skips incremental recipe unlock tracking: default:true");
         entry8.addProperty("recipebookShowAll", recipebookShowAll);
         root.add("recipebookShowAll", entry8);
 

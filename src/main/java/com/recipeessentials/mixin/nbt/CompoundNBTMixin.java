@@ -20,7 +20,7 @@ import java.util.Map;
  * Caches the hashcode and marks dirty for recalculation, to avoid calculating it more than necessary. And use it for comparison
  * Saves a cross-reference to the last compared compound to avoid equalling the maps too often
  */
-public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, IEqualTag, Tag
+public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, IEqualTag
 {
     @Shadow
     @Final
@@ -44,30 +44,9 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
         return hashCode;
     }
 
-    @Redirect(method = {"put", "putByte", "putShort", "putInt", "putLong", "putUUID", "putFloat", "putDouble", "putString", "putByteArray", "putIntArray", "putLongArray",
+    @Redirect(method = {"put", "putByte", "putShort", "putInt", "putLong", "putFloat", "putDouble", "putString", "putByteArray", "putIntArray", "putLongArray",
       "putBoolean"}, at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
     private Object onPut(final Map map, final Object key, final Object value)
-    {
-        markDirty();
-        return map.put(key, value);
-    }
-
-    @Redirect(method = "putByteArray(Ljava/lang/String;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onPutByteArray(final Map map, final Object key, final Object value)
-    {
-        markDirty();
-        return map.put(key, value);
-    }
-
-    @Redirect(method = "putIntArray(Ljava/lang/String;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onPutIntArray(final Map map, final Object key, final Object value)
-    {
-        markDirty();
-        return map.put(key, value);
-    }
-
-    @Redirect(method = "putLongArray(Ljava/lang/String;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onPutLongArray(final Map map, final Object key, final Object value)
     {
         markDirty();
         return map.put(key, value);
@@ -77,44 +56,24 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
     public void get(final String p_128424_, final CallbackInfoReturnable<Tag> cir)
     {
         Tag v = cir.getReturnValue();
-        if (v instanceof IParentAwareTag)
+        if ((Object) v instanceof IParentAwareTag)
         {
-            ((IParentAwareTag) v).setParent(this);
-        }
-    }
-
-    @Inject(method = "getCompound", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER))
-    public void getCompound(final String p_128424_, final CallbackInfoReturnable<Tag> cir)
-    {
-        Tag v = cir.getReturnValue();
-        if (v instanceof IParentAwareTag)
-        {
-            ((IParentAwareTag) v).setParent(this);
-        }
-    }
-
-    @Inject(method = "getList", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER))
-    public void getList(final String p_128438_, final int p_128439_, final CallbackInfoReturnable<ListTag> cir)
-    {
-        Tag v = cir.getReturnValue();
-        if (v instanceof IParentAwareTag)
-        {
-            ((IParentAwareTag) v).setParent(this);
+            ((IParentAwareTag) (Object) v).setParent(this);
         }
     }
 
     @Inject(method = "put", at = @At("RETURN"))
     public void put(final String p_128366_, final Tag tag, final CallbackInfoReturnable<Tag> cir)
     {
-        if (tag instanceof IParentAwareTag)
+        if ((Object) tag instanceof IParentAwareTag)
         {
-            ((IParentAwareTag) tag).setParent(this);
+            ((IParentAwareTag) (Object) tag).setParent(this);
         }
         markDirty();
     }
 
     @Inject(method = "remove", at = @At("RETURN"))
-    public void remove(final String p_128474_, final CallbackInfo ci)
+    public void remove(final String p_128474_, final CallbackInfoReturnable<Tag> cir)
     {
         markDirty();
     }
@@ -124,9 +83,9 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
       final CompoundTag tag,
       final CallbackInfoReturnable<CompoundTag> cir)
     {
-        if (tag instanceof IParentAwareTag)
+        if ((Object) tag instanceof IParentAwareTag)
         {
-            ((IParentAwareTag) tag).setParent(this);
+            ((IParentAwareTag) (Object) tag).setParent(this);
         }
         markDirty();
     }
@@ -202,9 +161,9 @@ public abstract class CompoundNBTMixin implements IParentTag, IParentAwareTag, I
     }
 
     @Inject(method = "getCompound", at = @At("RETURN"))
-    private void onGetCompound(final String p_128470_, final CallbackInfoReturnable<CompoundTag> cir)
+    private void onGetCompound(final String p_128470_, final CallbackInfoReturnable<java.util.Optional<CompoundTag>> cir)
     {
-        ((IParentAwareTag) cir.getReturnValue()).setParent(this);
+        cir.getReturnValue().ifPresent(tag -> ((IParentAwareTag) (Object) tag).setParent(this));
     }
 
     @Override

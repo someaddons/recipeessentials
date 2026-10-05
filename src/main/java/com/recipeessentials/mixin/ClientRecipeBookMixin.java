@@ -1,35 +1,20 @@
 package com.recipeessentials.mixin;
 
-import com.recipeessentials.config.CommonConfiguration;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.RecipeBook;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.client.ClientRecipeBook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * TODO: Disabled, seems to affect login with multiple mods around? replace by specific redirects
- */
-@Mixin(RecipeBook.class)
+import static com.recipeessentials.RecipeEssentialsClient.USED_GHOST_RECIPES;
+
+@Mixin(ClientRecipeBook.class)
 public class ClientRecipeBookMixin
 {
-    @Inject(method = "contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z", at = @At("HEAD"), cancellable = true)
-    public void recipeessentials$containsRecipe(final RecipeHolder<?> recipe, final CallbackInfoReturnable<Boolean> cir)
+    @Inject(method = "clear", at = @At("HEAD"))
+    private void recipeessentials$resetUsage(final CallbackInfo ci)
     {
-        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll && recipe != null && !recipe.value().isSpecial())
-        {
-            cir.setReturnValue(true);
-        }
-    }
-
-    @Inject(method = "contains(Lnet/minecraft/resources/ResourceLocation;)Z", at = @At("HEAD"), cancellable = true)
-    public void recipeessentials$contains(final ResourceLocation p_12712_, final CallbackInfoReturnable<Boolean> cir)
-    {
-        if (CommonConfiguration.config.getCommonConfig().recipebookShowAll && p_12712_ != null)
-        {
-            cir.setReturnValue(true);
-        }
+        // Display IDs are assigned anew when joining a server or reloading recipes.
+        USED_GHOST_RECIPES.clear();
     }
 }

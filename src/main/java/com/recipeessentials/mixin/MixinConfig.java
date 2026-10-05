@@ -30,7 +30,7 @@ public class MixinConfig implements IMixinConfigPlugin
         if (mixinClassName.contains("ItemStackMixin") || mixinClassName.contains("CompoundNBTMixin") || mixinClassName.contains("ByteArrayTagMixin") || mixinClassName.contains(
           "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin") || mixinClassName.contains("ItemStackFastComparisonMixin"))
         {
-            if (FMLLoader.getLoadingModList().getModFileById("owo") != null)
+            if (FMLLoader.getCurrent().getLoadingModList().getModFileById("owo") != null)
             {
                 RecipeEssentials.LOGGER.warn("Disabling fastItemComparison feature, due to the Owo mod's faulty implementation breaking it");
                 return false;
@@ -39,9 +39,11 @@ public class MixinConfig implements IMixinConfigPlugin
             return CommonConfiguration.config.getCommonConfig().fastItemComparisons;
         }
 
-        if (mixinClassName.contains("RecipeManagerMixin"))
+        if (mixinClassName.endsWith("ReloadableServerResourcesMixin"))
         {
-            return CommonConfiguration.config.getCommonConfig().cacheRecipes;
+            // Let Polymorph control recipe selection without depending on its old API.
+            return CommonConfiguration.config.getCommonConfig().cacheRecipes
+              && FMLLoader.getCurrent().getLoadingModList().getModFileById("polymorph") == null;
         }
 
         return true;

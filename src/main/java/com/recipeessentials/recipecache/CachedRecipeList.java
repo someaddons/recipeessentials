@@ -16,19 +16,26 @@ public class CachedRecipeList
     public final List<RecipeHolder> recipes;
     public final List<ItemStack>    originStacks;
     public final RecipeType      originType;
+    private final Class<?> inputClass;
+    private final int width;
+    private final int height;
     private int useCount = 0;
     public       boolean         reported = false;
-
-    public CachedRecipeList(final List<RecipeHolder> recipes, final List<ItemStack> originStacks, final RecipeType originType)
-    {
-        this.recipes = recipes;
-        this.originStacks = originStacks;
-        this.originType = originType;
-    }
 
     public CachedRecipeList(final RecipeType recipeTypeIn, final RecipeInput inventoryIn)
     {
         originType = recipeTypeIn;
+        inputClass = inventoryIn.getClass();
+        if (inventoryIn instanceof net.minecraft.world.item.crafting.CraftingInput crafting)
+        {
+            width = crafting.width();
+            height = crafting.height();
+        }
+        else
+        {
+            width = 0;
+            height = 0;
+        }
         recipes = new ArrayList<>();
         originStacks = new ArrayList<>();
 
@@ -38,10 +45,7 @@ public class CachedRecipeList
             {
                 ItemStack stack = inventoryIn.getItem(i);
 
-                if (stack != null && !stack.isEmpty())
-                {
-                    originStacks.add(stack.copy());
-                }
+                originStacks.add(stack.copy());
             }
         }
     }
@@ -61,6 +65,27 @@ public class CachedRecipeList
 
         // Reset successful uses on mismatch
         useCount = 0;
+    }
+
+    public boolean matches(final RecipeType<?> type, final RecipeInput input)
+    {
+        if (type != originType || input.getClass() != inputClass || input.size() != originStacks.size())
+        {
+            return false;
+        }
+        if (input instanceof net.minecraft.world.item.crafting.CraftingInput crafting
+          && (crafting.width() != width || crafting.height() != height))
+        {
+            return false;
+        }
+        for (int i = 0; i < input.size(); i++)
+        {
+            if (!ItemStack.matches(input.getItem(i), originStacks.get(i)))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void increaseUsed()

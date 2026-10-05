@@ -1,17 +1,18 @@
 package com.recipeessentials.mixin;
 
 import com.recipeessentials.config.CommonConfiguration;
-import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerRecipeBook;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.Recipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ServerPlaceRecipe.class)
+@Mixin(ServerGamePacketListenerImpl.class)
 public class RecipebookMixin {
-    @Redirect(method = "recipeClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/ServerRecipeBook;contains(Lnet/minecraft/world/item/crafting/RecipeHolder;)Z"))
-    private boolean recipeessentials$contains(final ServerRecipeBook instance, final RecipeHolder recipe)
+    @Redirect(method = "handlePlaceRecipe", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/ServerRecipeBook;contains(Lnet/minecraft/resources/ResourceKey;)Z"))
+    private boolean recipeessentials$contains(final ServerRecipeBook instance, final ResourceKey<Recipe<?>> recipe)
     {
         if (recipe != null && CommonConfiguration.config.getCommonConfig().recipebookShowAll && !CommonConfiguration.config.getCommonConfig().disableRecipebook)
         {

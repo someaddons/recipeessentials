@@ -35,16 +35,22 @@ recipeessentials mod
 '''
 [[dependencies.recipeessentials]]
     modId="minecraft"
-    mandatory=true
+    type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange = "[1.21,1.30)"
+versionRange = "[26.1.2,26.2)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.recipeessentials]]
+    modId="neoforge"
+    type="required"
+    versionRange="[26.1.2.84,26.2)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.recipeessentials]]
     modId="cupboard"
-    mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange = "[1.21-1.4,)"
+    type="required"
+# Minimum Cupboard version used by this port.
+versionRange = "[4.0,)"
     ordering="NONE"
     side="BOTH"
 [[mixins]]

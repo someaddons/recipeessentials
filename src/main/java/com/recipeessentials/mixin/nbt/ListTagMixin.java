@@ -42,11 +42,11 @@ public class ListTagMixin implements IParentAwareTag
 
     @Inject(method = "getCompound", at = @At("RETURN"))
     private void onGetCompound(
-      final int p_128729_, final CallbackInfoReturnable<CompoundTag> cir)
+      final int p_128729_, final CallbackInfoReturnable<java.util.Optional<CompoundTag>> cir)
     {
         if (parentTag != null)
         {
-            CompoundTag r = cir.getReturnValue();
+            Object r = cir.getReturnValue().orElse(null);
             if (r instanceof IParentAwareTag)
             {
                 ((IParentAwareTag) r).setParent(parentTag);
@@ -56,11 +56,11 @@ public class ListTagMixin implements IParentAwareTag
 
     @Inject(method = "getList", at = @At("RETURN"))
     private void onGetList(
-      final int p_128729_, final CallbackInfoReturnable<ListTag> cir)
+      final int p_128729_, final CallbackInfoReturnable<java.util.Optional<ListTag>> cir)
     {
         if (parentTag != null)
         {
-            ListTag r = cir.getReturnValue();
+            Object r = cir.getReturnValue().orElse(null);
             if (r instanceof IParentAwareTag)
             {
                 ((IParentAwareTag) r).setParent(parentTag);
@@ -70,6 +70,15 @@ public class ListTagMixin implements IParentAwareTag
 
     @Inject(method = "set(ILnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;", at = @At("RETURN"))
     private void onSet(final int p_128760_, final Tag p_128761_, final CallbackInfoReturnable<Tag> cir)
+    {
+        if (parentTag != null)
+        {
+            parentTag.markDirty();
+        }
+    }
+
+    @Inject(method = "add(ILnet/minecraft/nbt/Tag;)V", at = @At("RETURN"))
+    private void onAdd(final int index, final Tag tag, final CallbackInfo ci)
     {
         if (parentTag != null)
         {

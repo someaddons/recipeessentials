@@ -7,8 +7,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public abstract class RecipeBookButtonMixin extends Screen
     public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
     {
         if (CommonConfiguration.config.getCommonConfig().disableRecipebook
-              && ((Object) this instanceof CraftingScreen || (Object) this instanceof InventoryScreen || (Object) this instanceof EffectRenderingInventoryScreen)
+              && ((Object) this instanceof CraftingScreen || (Object) this instanceof InventoryScreen || (Object) this instanceof AbstractRecipeBookScreen<?>)
               && widget instanceof ImageButton && ((ImageButton) widget).sprites.equals(RECIPE_BUTTON_SPRITES))
         {
             return widget;
