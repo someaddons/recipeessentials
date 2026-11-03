@@ -7,11 +7,7 @@
     "ItemStackFastComparisonMixin",
     "RecipebookMixin",
     "ReloadableServerResourcesMixin",
-    "ServerRecipeBookMixin",
-    "nbt.ByteArrayTagMixin",
-    "nbt.IntArrayTagMixin",
-    "nbt.ListTagMixin",
-    "nbt.LongArrayTagMixin"
+    "ServerRecipeBookMixin"
   ],
   "client": [
     "ClientRecipeBookMixin",
