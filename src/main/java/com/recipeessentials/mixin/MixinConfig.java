@@ -27,8 +27,7 @@ public class MixinConfig implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(final String targetClassName, final String mixinClassName)
     {
-        if (mixinClassName.contains("ItemStackMixin") || mixinClassName.contains("CompoundNBTMixin") || mixinClassName.contains("ByteArrayTagMixin") || mixinClassName.contains(
-          "IntArrayTagMixin") || mixinClassName.contains("ListTagMixin") || mixinClassName.contains("LongArrayTagMixin") || mixinClassName.contains("ItemStackFastComparisonMixin"))
+        if (mixinClassName.contains("ItemStackFastComparisonMixin"))
         {
             if (FMLLoader.getCurrent().getLoadingModList().getModFileById("owo") != null)
             {

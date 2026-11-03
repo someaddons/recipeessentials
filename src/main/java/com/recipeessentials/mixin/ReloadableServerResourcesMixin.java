@@ -1,6 +1,5 @@
 package com.recipeessentials.mixin;
 
-import com.google.gson.internal.reflect.ReflectionHelper;
 import com.recipeessentials.RecipeEssentials;
 import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.commands.Commands;
@@ -46,7 +45,6 @@ public class ReloadableServerResourcesMixin
         if (CommonConfiguration.config.getCommonConfig().cacheRecipes)
         {
             recipes = new com.recipeessentials.recipecache.RecipeManager(registryLookup);
-
 
             try
             {
