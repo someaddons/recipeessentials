@@ -37,13 +37,13 @@ recipeessentials mod
     modId="minecraft"
     type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange = "[26.1.2,26.2)"
+versionRange = "[26.2,26.3)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.recipeessentials]]
     modId="neoforge"
     type="required"
-    versionRange="[26.1.2.84,26.2)"
+    versionRange="[26.2.0.93,26.3)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.recipeessentials]]
