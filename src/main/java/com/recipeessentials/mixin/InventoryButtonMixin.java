@@ -3,8 +3,9 @@ package com.recipeessentials.mixin;
 import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 import static net.minecraft.client.gui.screens.recipebook.RecipeBookComponent.RECIPE_BUTTON_SPRITES;
 
 @Mixin(InventoryScreen.class)
-public abstract class InventoryButtonMixin extends EffectRenderingInventoryScreen<InventoryMenu>
+public abstract class InventoryButtonMixin extends AbstractRecipeBookScreen<InventoryMenu>
 {
-    public InventoryButtonMixin(final InventoryMenu p_98701_, final Inventory p_98702_, final Component p_98703_)
+    public InventoryButtonMixin(final InventoryMenu menu, final RecipeBookComponent<?> recipeBookComponent, final Inventory inventory, final Component title)
     {
-        super(p_98701_, p_98702_, p_98703_);
+        super(menu, recipeBookComponent, inventory, title);
     }
 
     @Shadow

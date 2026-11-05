@@ -2,8 +2,10 @@ package com.recipeessentials.mixin;
 
 import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.LayeredRegistryAccess;
 import net.minecraft.server.ReloadableServerResources;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.spongepowered.asm.mixin.Final;
@@ -14,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(ReloadableServerResources.class)
 public class ReloadableServerResourcesMixin
 {
@@ -22,16 +26,16 @@ public class ReloadableServerResourcesMixin
     @Mutable
     private RecipeManager recipes;
 
-    @Shadow
-    @Final
-    private ReloadableServerResources.ConfigurableRegistryLookup registryLookup;
-
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(
-      final RegistryAccess.Frozen registryAccess,
-      final FeatureFlagSet p_250695_,
-      final Commands.CommandSelection p_206858_,
-      final int p_206859_, final CallbackInfo ci)
+        final LayeredRegistryAccess fullLayers,
+        final HolderLookup.Provider registryLookup,
+        final FeatureFlagSet enabledFeatures,
+        final Commands.CommandSelection commandSelection,
+        final List postponedTags,
+        final PermissionSet functionCompilationPermissions,
+        final List newComponents,
+        final CallbackInfo ci)
     {
         if (CommonConfiguration.config.getCommonConfig().cacheRecipes)
         {

@@ -39,7 +39,7 @@ public class MixinConfig implements IMixinConfigPlugin
             return CommonConfiguration.config.getCommonConfig().fastItemComparisons;
         }
 
-        if (mixinClassName.contains("RecipeManagerMixin"))
+        if (mixinClassName.endsWith("ReloadableServerResourcesMixin"))
         {
             return CommonConfiguration.config.getCommonConfig().cacheRecipes;
         }

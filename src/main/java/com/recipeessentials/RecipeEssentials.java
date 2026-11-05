@@ -2,7 +2,7 @@ package com.recipeessentials;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,8 +24,8 @@ public class RecipeEssentials implements ModInitializer
         }
     }
 
-    public static ResourceLocation id(String name)
+    public static Identifier id(String name)
     {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+        return Identifier.fromNamespaceAndPath(MOD_ID, name);
     }
 }
