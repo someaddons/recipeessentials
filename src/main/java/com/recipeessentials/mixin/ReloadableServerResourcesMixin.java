@@ -3,9 +3,8 @@ package com.recipeessentials.mixin;
 import com.recipeessentials.RecipeEssentials;
 import com.recipeessentials.config.CommonConfiguration;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.LayeredRegistryAccess;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -33,8 +32,7 @@ public class ReloadableServerResourcesMixin
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void createManager(
-        final LayeredRegistryAccess fullLayers,
-        final HolderLookup.Provider registryLookup,
+        final ReloadableServerRegistries.LoadResult loadingContext,
         final FeatureFlagSet enabledFeatures,
         final Commands.CommandSelection commandSelection,
         final List postponedTags,
@@ -44,14 +42,14 @@ public class ReloadableServerResourcesMixin
     {
         if (CommonConfiguration.config.getCommonConfig().cacheRecipes)
         {
-            recipes = new com.recipeessentials.recipecache.RecipeManager(registryLookup);
+            recipes = new com.recipeessentials.recipecache.RecipeManager(loadingContext.lookupWithUpdatedTags());
 
             try
             {
                 Field field = VanillaServerListeners.class.getDeclaredField("KNOWN_CLASSES");
                 field.setAccessible(true);
                 Map<Class<?>, Identifier> value = (Map<Class<?>, Identifier>) field.get(VanillaServerListeners.class);
-                value.put(recipes.getClass(), VanillaServerListeners.RECIPES);
+                value.put(recipes.getClass(), Identifier.fromNamespaceAndPath(RecipeEssentials.MOD_ID,"recipemanager"));
             }
             catch (Exception e)
             {
