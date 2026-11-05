@@ -32,12 +32,6 @@ public class ItemStackFastComparisonMixin implements ICachedComponentMap
     @Unique
     private ICachedComponentMap recipeessentials$lastEquals = null;
 
-    @Shadow
-    private static int hashPatch(final Reference2ObjectMap<DataComponentType<?>, Optional<?>> patch)
-    {
-        return -1;
-    }
-
     // prototype is immutable
     @Redirect(method = "hashCode", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap;hashCode()I"))
     private int recipeessentials$getPrototypeHashCode(final DataComponentMap prototype)
@@ -50,12 +44,12 @@ public class ItemStackFastComparisonMixin implements ICachedComponentMap
     }
 
     // Neoforge patch hash
-    @Redirect(method = "hashCode", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;hashPatch(Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;)I"))
+    @Redirect(method = "hashCode", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;hashCode()I"))
     private int recipeessentials$getPatchHashCode(final Reference2ObjectMap<DataComponentType<?>, Optional<?>> patch)
     {
         if (recipeessentials$patchHashCode == -1)
         {
-            recipeessentials$patchHashCode = hashPatch(patch);
+            recipeessentials$patchHashCode = patch.hashCode();
         }
         return recipeessentials$patchHashCode;
     }
